@@ -7,39 +7,75 @@
   <!-- Link to the manifest for PWA -->
   <link rel="manifest" href="manifest.json">
   <style>
-    /* CSS Variables for Theming */
+    /* ==================== THEME VARIABLES ==================== */
     :root {
       --bg-color: #1d1f21;
+      --bg-gradient: linear-gradient(135deg, #1d1f21, #2a2c2e);
       --text-color: #c5c8c6;
       --window-bg: #000;
       --window-border: #333;
       --header-bg: #444;
       --header-text: #66d9ef;
       --prompt-color: #66d9ef;
+      --accent-color: #00d1b2; /* Accent color for highlights */
+      --transition-speed: 0.3s;
+      --padding-small: 8px;
+      --padding-medium: 16px;
+      --padding-large: 24px;
+      --xp-bar-bg: #333;
+      --xp-bar-fill: #00d1b2;
     }
     body.light-mode {
       --bg-color: #f0f0f0;
+      --bg-gradient: linear-gradient(135deg, #f0f0f0, #e0e0e0);
       --text-color: #333;
       --window-bg: #fff;
       --window-border: #ccc;
       --header-bg: #eee;
       --header-text: #007acc;
       --prompt-color: #007acc;
+      --accent-color: #007acc;
+      --xp-bar-bg: #ccc;
+      --xp-bar-fill: #007acc;
     }
-    
-    /* Global Styles */
+    body.modern {
+      --bg-color: #2c3e50;
+      --bg-gradient: linear-gradient(135deg, #2c3e50, #34495e);
+      --text-color: #ecf0f1;
+      --window-bg: #34495e;
+      --window-border: #2c3e50;
+      --header-bg: #2c3e50;
+      --header-text: #ecf0f1;
+      --prompt-color: #1abc9c;
+      --accent-color: #1abc9c;
+      --xp-bar-bg: #2c3e50;
+      --xp-bar-fill: #1abc9c;
+    }
+    /* Additional window theme styles for demonstration */
+    .window.retro {
+      background: #222;
+      border-color: #ff8c00;
+      box-shadow: 0 0 15px rgba(255, 140, 0, 0.8);
+    }
+    .window.futuristic {
+      background: #0d0d0d;
+      border-color: #00ffcc;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.8);
+    }
+
+    /* ==================== GLOBAL STYLES ==================== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: 'Roboto Mono', monospace;
       overflow: hidden;
-      transition: background 0.3s, color 0.3s;
-      background: var(--bg-color);
+      transition: background var(--transition-speed), color var(--transition-speed);
+      background: var(--bg-gradient);
       color: var(--text-color);
     }
-    
-    /* Particles Background */
+
+    /* ==================== PARTICLES BACKGROUND ==================== */
     #particles-js {
       position: fixed;
       top: 0;
@@ -47,53 +83,94 @@
       width: 100vw;
       height: 100vh;
       z-index: -1;
-      pointer-events: auto;
     }
-    
-    /* Desktop Container */
+
+    /* ==================== DESKTOP CONTAINER ==================== */
     #desktop {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
-    
-    /* Draggable Window Styles */
+
+    /* ==================== WINDOW STYLES ==================== */
     .window {
       position: absolute;
       background: var(--window-bg);
       border: 1px solid var(--window-border);
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
       overflow: hidden;
-      transition: width 0.2s, height 0.2s;
+      transition: width var(--transition-speed), height var(--transition-speed), box-shadow var(--transition-speed);
     }
-    
-    /* Window Header */
+    .window:hover {
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    }
+
+    /* ==================== WINDOW HEADER ==================== */
     .window-header {
       background: var(--header-bg);
-      padding: 10px;
+      padding: 10px 12px;
       cursor: move;
       color: var(--header-text);
       user-select: none;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    .window-header .title { font-weight: bold; }
-    .window-header .close-btn {
-      cursor: pointer;
-      padding: 0 5px;
-      font-size: 16px;
-    }
-    .window-content {
-      padding: 10px;
-      max-height: 400px;
-      overflow: auto;
+      border-bottom: 2px solid var(--accent-color);
+      transition: filter 0.3s ease;
       position: relative;
     }
-    
-    /* Resize Handle */
+    .window-header:hover {
+      filter: brightness(1.05);
+    }
+    .window-header .title {
+      font-weight: bold;
+      font-size: 18px;
+      font-family: 'Roboto', sans-serif;
+    }
+    .window-header .close-btn {
+      cursor: pointer;
+      padding: 0 8px;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+    .window-header .close-btn:hover {
+      color: #ff5555;
+    }
+    /* Level indicator now centered in header */
+    #level-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      color: var(--header-text);
+      font-family: 'Roboto', sans-serif;
+    }
+    .window-content {
+      padding: var(--padding-medium);
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      position: relative;
+    }
+    /* XP Progress Bar */
+    #xp-bar-container {
+      width: 100%;
+      background: var(--xp-bar-bg);
+      height: 6px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #xp-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--xp-bar-fill);
+      transition: width 0.5s ease;
+    }
+
+    /* ==================== RESIZE HANDLE ==================== */
     .resize-handle {
       position: absolute;
       width: 15px;
@@ -102,16 +179,27 @@
       bottom: 0;
       cursor: se-resize;
       background: rgba(255,255,255,0.2);
+      transition: background 0.3s ease;
     }
-    
-    /* Terminal Styles */
+    .resize-handle:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+    /* ==================== TERMINAL STYLES ==================== */
     .terminal-output {
       font-size: 14px;
       white-space: pre-wrap;
       margin-bottom: 5px;
     }
-    .terminal-input-line { display: flex; align-items: center; }
-    .terminal-prompt { margin-right: 5px; color: var(--prompt-color); }
+    .terminal-input-line { 
+      display: flex; 
+      align-items: center; 
+      position: relative;
+    }
+    .terminal-prompt { 
+      margin-right: 5px; 
+      color: var(--prompt-color); 
+    }
     .terminal-input {
       flex: 1;
       background: transparent;
@@ -120,28 +208,59 @@
       color: inherit;
       font-family: inherit;
       font-size: 14px;
+      padding: 6px;
+      transition: border-bottom 0.2s ease, transform 0.2s ease;
     }
-    
-    /* Scrollbar Styling */
+    .terminal-input:focus {
+      border-bottom: 1px solid var(--accent-color);
+      transform: scale(1.005);
+    }
+    /* Command Suggestions */
+    #command-suggestions {
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      padding: 5px;
+      border-radius: 3px;
+      font-size: 14px;
+      z-index: 1500;
+      max-width: 90%;
+      display: none;
+    }
+    #command-suggestions .suggestion {
+      padding: 2px 5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #command-suggestions .suggestion:hover {
+      background: var(--accent-color);
+    }
+
+    /* ==================== SCROLLBAR STYLES ==================== */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-thumb {
       background: #444;
       border-radius: 4px;
     }
-    
-    /* Project Item Styling */
+
+    /* ==================== PROJECT ITEM STYLES ==================== */
     .project-item {
       padding: 10px;
       border: 1px solid #444;
       border-radius: 3px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    .project-item:hover { background-color: #333; }
+    .project-item:hover {
+      background-color: #333;
+      transform: scale(1.01);
+    }
     body.light-mode .project-item { border-color: #ccc; }
     body.light-mode .project-item:hover { background-color: #ddd; }
-    
-    /* Volume Control Styling */
+
+    /* ==================== VOLUME CONTROL ==================== */
     #volume-control-container {
       position: fixed;
       bottom: 10px;
@@ -155,8 +274,8 @@
       z-index: 1000;
     }
     #volume-control { width: 100px; vertical-align: middle; margin-left: 5px; }
-    
-    /* Responsive & Adaptive Design */
+
+    /* ==================== RESPONSIVE DESIGN ==================== */
     @media (max-width: 768px) {
       .window {
         width: 90vw !important;
@@ -171,8 +290,8 @@
         font-size: 12px;
       }
     }
-    
-    /* Toast Notification Styles */
+
+    /* ==================== TOAST NOTIFICATIONS ==================== */
     #toast {
       position: fixed;
       bottom: 20px;
@@ -191,70 +310,49 @@
   </style>
 </head>
 <body>
-  <!-- Particles Background -->
+  <!-- ==================== PARTICLES BACKGROUND ==================== -->
   <div id="particles-js"></div>
   
-  <!-- Desktop Container -->
+  <!-- ==================== DESKTOP CONTAINER ==================== -->
   <div id="desktop">
     <!-- Main Terminal Window -->
-    <div class="window" id="main-terminal" style="width: 500px; height: 300px; top: 50px; left: 50px;">
+    <div class="window default" id="main-terminal" style="width: 500px; height: 300px; top: 50px; left: 650px;">
       <div class="window-header">
+        <!-- Branding: Logo and Title -->
+        <img src="assets/logo.png" alt="My Logo" style="height:24px; margin-right:8px;">
         <span class="title">DevTerminal</span>
-        <!-- Hide close button on main terminal -->
         <span class="close-btn" style="display: none;" aria-hidden="true">&times;</span>
+        <div id="level-indicator">Level 1</div>
       </div>
-      <div class="window-content">
+      <!-- XP Progress Bar -->
+      <div id="xp-bar-container">
+        <div id="xp-bar"></div>
+      </div>
+      <div class="window-content" style="padding-top:10px;">
         <div id="terminal-output" class="terminal-output" aria-live="polite"></div>
         <div class="terminal-input-line">
           <span class="terminal-prompt">&gt;</span>
           <input type="text" id="terminal-input" class="terminal-input" aria-label="Terminal command input" autocomplete="off" autofocus>
+          <div id="command-suggestions"></div>
         </div>
       </div>
       <div class="resize-handle"></div>
     </div>
   </div>
   
-  <!-- Volume Control Slider -->
+  <!-- ==================== VOLUME CONTROL SLIDER ==================== -->
   <div id="volume-control-container">
     Volume:
     <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.1">
   </div>
   
-  <!-- Include GSAP & Particles.js libraries -->
+  <!-- ==================== INCLUDE LIBRARIES ==================== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
+  <!-- ==================== MAIN SCRIPT ==================== -->
   <script>
-    /* ------------------- Gamification Variables ------------------- */
-    let score = 0;
-    let achievements = [];
-    window.currentQuest = null;
-    
-    /* ------------------- Initialize Particles.js ------------------- */
-    particlesJS("particles-js", {
-      "particles": {
-        "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
-        "color": { "value": "#ffffff" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.5 },
-        "size": { "value": 3, "random": true },
-        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
-        "move": { "enable": true, "speed": 6, "direction": "none", "out_mode": "out" }
-      },
-      "interactivity": {
-        "events": { 
-          "onhover": { "enable": true, "mode": ["grab", "repulse"] },
-          "onclick": { "enable": true, "mode": "push" }
-        },
-        "modes": { 
-          "repulse": { "distance": 200, "duration": 0.4 },
-          "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } }
-        }
-      },
-      "retina_detect": true
-    });
-    
-    /* ------------------- Audio Feedback ------------------- */
+    /* ==================== UTILITIES ==================== */
     function playBeep(frequency = 440, duration = 0.1) {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -269,153 +367,14 @@
         oscillator.type = "square";
         oscillator.start();
         setTimeout(() => { oscillator.stop(); }, duration * 1000);
-      } catch (e) {
+      } catch(e) {
         console.error("Web Audio API not supported");
       }
     }
     
-    /* ------------------- Global Settings & Persisted Theme ------------------- */
-    window.customAnimationSpeed = 0.5;
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-mode');
-    }
-    
-    /* ------------------- Virtual File System ------------------- */
-    let currentPath = "/";
-    const fileSystem = {
-      "/": {
-        type: "dir",
-        children: {
-          "projects": {
-            type: "dir",
-            children: {
-              "project1.txt": { type: "file", content: "Project One details: A creative project showcasing my skills in web development." },
-              "project2.txt": { type: "file", content: "Project Two details: A mobile app that revolutionizes user interaction." },
-              "project3.txt": { type: "file", content: "Project Three details: A desktop application built for efficiency and productivity." }
-            }
-          },
-          "about.txt": { type: "file", content: "I'm a passionate developer who loves blending creativity with technology. My journey in software development has been fueled by curiosity and a desire to create interactive experiences that push boundaries." },
-          "resume.pdf": { type: "file", content: "[PDF file simulated]" },
-          "blog": {
-            type: "dir",
-            children: { "post1.txt": { type: "file", content: "This is post one in my blog." } }
-          }
-        }
-      }
-    };
-    
-    function getDirectory(path) {
-      let parts = path.split("/").filter(Boolean);
-      let current = fileSystem["/"];
-      for (let part of parts) {
-        if (current.children && current.children[part]) {
-          current = current.children[part];
-        } else {
-          return null;
-        }
-      }
-      return current;
-    }
-    
-    /* ------------------- Gamification Functions ------------------- */
-    function startQuest() {
-      // Valid quests only include commands that exist.
-      const validQuests = [
-        { expectedCommand: "open resume.pdf", questText: "Type 'open resume.pdf' to view my CV.", reward: 100, achievement: "CV Explorer" },
-        { expectedCommand: "show projects", questText: "Type 'show projects' to explore my projects.", reward: 80, achievement: "Project Navigator" },
-        { expectedCommand: "show about", questText: "Type 'show about' to learn more about me.", reward: 60, achievement: "About Me" },
-        { expectedCommand: "new terminal", questText: "Type 'new terminal' to open a new terminal window.", reward: 50, achievement: "Multi-Terminal Master" },
-        { expectedCommand: "toggle theme", questText: "Type 'toggle theme' to switch between light and dark mode.", reward: 30, achievement: "Theme Switcher" },
-        { expectedCommand: "ls", questText: "Type 'ls' to list files and directories.", reward: 20, achievement: "File Explorer" },
-        { expectedCommand: "settings", questText: "Type 'settings' to configure your experience.", reward: 25, achievement: "Settings Expert" },
-        { expectedCommand: "quest", questText: "Type 'quest' to discover another quest.", reward: 10, achievement: "Quest Master" },
-        { expectedCommand: "score", questText: "Type 'score' to check your XP points.", reward: 10, achievement: "XP Collector" },
-        { expectedCommand: "achievements", questText: "Type 'achievements' to see your unlocked achievements.", reward: 15, achievement: "Achievement Hunter" }
-      ];
-      
-      // Filter out quests for which the achievement is already earned.
-      const availableQuests = validQuests.filter(q => !achievements.includes(q.achievement));
-      if (availableQuests.length > 0) {
-        window.currentQuest = availableQuests[Math.floor(Math.random() * availableQuests.length)];
-        appendOutput("🛠 New Quest: " + window.currentQuest.questText + " (Reward: " + window.currentQuest.reward + " XP, Achievement: " + window.currentQuest.achievement + ")");
-      } else {
-        appendOutput("✔️ No new quests available at the moment. You've completed them all!");
-      }
-    }
-    
-    function checkQuestCompletion(cmd) {
-      if (window.currentQuest && cmd === window.currentQuest.expectedCommand) {
-        // Award only if not already earned.
-        if (!achievements.includes(window.currentQuest.achievement)) {
-          score += window.currentQuest.reward;
-          achievements.push(window.currentQuest.achievement);
-          appendOutput("Quest completed! You earned " + window.currentQuest.reward + " XP and unlocked achievement: " + window.currentQuest.achievement);
-          showToast("Quest completed! +" + window.currentQuest.reward + " XP, " + window.currentQuest.achievement);
-        }
-        window.currentQuest = null;
-        return true;
-      }
-      return false;
-    }
-    
-    /* ------------------- Draggable & Resizable Windows ------------------- */
-    function smoothClose(el) {
-      playBeep(300, 0.15);
-      gsap.to(el, {duration: 0.3, opacity: 0, scale: 0.8, onComplete: () => el.remove()});
-    }
-    
-    function makeDraggable(el) {
-      const header = el.querySelector('.window-header');
-      let offsetX = 0, offsetY = 0;
-      header.addEventListener('mousedown', function(e) {
-        offsetX = e.clientX - el.offsetLeft;
-        offsetY = e.clientY - el.offsetTop;
-        document.addEventListener('mousemove', mouseMove);
-        document.addEventListener('mouseup', mouseUp);
-      });
-      function mouseMove(e) {
-        el.style.left = (e.clientX - offsetX) + 'px';
-        el.style.top = (e.clientY - offsetY) + 'px';
-      }
-      function mouseUp() {
-        document.removeEventListener('mousemove', mouseMove);
-        document.removeEventListener('mouseup', mouseUp);
-      }
-    }
-    
-    function makeResizable(el) {
-      const handle = el.querySelector('.resize-handle');
-      let startX, startY, startWidth, startHeight;
-      handle.addEventListener('mousedown', function(e) {
-        e.stopPropagation();
-        el.style.transition = "none";
-        startX = e.clientX;
-        startY = e.clientY;
-        startWidth = parseInt(getComputedStyle(el).width, 10);
-        startHeight = parseInt(getComputedStyle(el).height, 10);
-        document.addEventListener('mousemove', resizeMouseMove);
-        document.addEventListener('mouseup', resizeMouseUp);
-      });
-      function resizeMouseMove(e) {
-        el.style.width = (startWidth + e.clientX - startX) + 'px';
-        el.style.height = (startHeight + e.clientY - startY) + 'px';
-      }
-      function resizeMouseUp() {
-        document.removeEventListener('mousemove', resizeMouseMove);
-        document.removeEventListener('mouseup', resizeMouseUp);
-        el.style.transition = "width 0.2s, height 0.2s";
-      }
-    }
-    
-    const mainTerminal = document.getElementById('main-terminal');
-    makeDraggable(mainTerminal);
-    makeResizable(mainTerminal);
-    
-    /* ------------------- Toast Notification Function ------------------- */
     function showToast(message, duration = 3000) {
       const existingToast = document.getElementById('toast');
-      if (existingToast) { existingToast.remove(); }
+      if(existingToast){ existingToast.remove(); }
       const toast = document.createElement('div');
       toast.id = 'toast';
       toast.innerText = message;
@@ -436,17 +395,269 @@
       setTimeout(() => { toast.classList.add('show'); toast.style.opacity = '1'; }, 10);
       setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, duration);
     }
-    
-    /* ------------------- Main Terminal Functionality ------------------- */
-    const terminalOutput = document.getElementById('terminal-output');
+
+    /* ==================== PARTICLES INITIALIZATION ==================== */
+    particlesJS("particles-js", {
+      "particles": {
+         "number": { "value": 100, "density": { "enable": true, "value_area": 1000 } },
+         "color": { "value": "#ffffff" },
+         "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+         "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+         "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 3, "size_min": 0.1, "sync": false } },
+         "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+         "move": { 
+            "enable": true, 
+            "speed": 2, 
+            "direction": "none", 
+            "random": false, 
+            "straight": false, 
+            "out_mode": "out", 
+            "bounce": false,
+            "attract": { "enable": true, "rotateX": 600, "rotateY": 1200 }
+         }
+      },
+      "interactivity": {
+         "detect_on": "canvas",
+         "events": { 
+            "onhover": { "enable": true, "mode": "grab" },
+            "onclick": { "enable": true, "mode": "push" },
+            "resize": true 
+         },
+         "modes": { 
+            "grab": { "distance": 200, "line_linked": { "opacity": 1 } },
+            "bubble": { "distance": 250, "size": 0, "duration": 2, "opacity": 0, "speed": 3 },
+            "repulse": { "distance": 150, "duration": 0.4 },
+            "push": { "particles_nb": 4 },
+            "remove": { "particles_nb": 2 }
+         }
+      },
+      "retina_detect": true
+    });
+
+    /* ==================== THEME & SETTINGS ==================== */
+    window.customAnimationSpeed = 0.5;
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme === 'light'){
+       document.body.classList.add('light-mode');
+    }
+    const savedUIStyle = localStorage.getItem('uiStyle');
+    if(savedUIStyle === 'modern'){
+       document.body.classList.add('modern');
+    }
+
+    /* ==================== VIRTUAL FILE SYSTEM ==================== */
+    let currentPath = "/";
+    const fileSystem = {
+      "/": {
+         type: "dir",
+         children: {
+            "projects": {
+               type: "dir",
+               children: {
+                  "project1.txt": { type: "file", content: "Project One details: A creative project showcasing my skills in web development." },
+                  "project2.txt": { type: "file", content: "Project Two details: A mobile app that revolutionizes user interaction." },
+                  "project3.txt": { type: "file", content: "Project Three details: A desktop application built for efficiency and productivity." }
+               }
+            },
+            "about.txt": { type: "file", content: "I'm a passionate developer who loves blending creativity with technology. My journey in software development has been fueled by curiosity and a desire to create interactive experiences that push boundaries." },
+            "resume.pdf": { type: "file", content: "[PDF file simulated]" },
+            "blog": {
+               type: "dir",
+               children: { "post1.txt": { type: "file", content: "This is post one in my blog." } }
+            }
+         }
+      }
+    };
+    function getDirectory(path) {
+      let parts = path.split("/").filter(Boolean);
+      let current = fileSystem["/"];
+      for(let part of parts){
+         if(current.children && current.children[part]){
+            current = current.children[part];
+         } else {
+            return null;
+         }
+      }
+      return current;
+    }
+
+    /* ==================== GAMIFICATION ==================== */
+    let score = 0;
+    let achievements = [];
+    window.currentQuest = null;
+    let level = 1;
+    let nextLevelXP = 100; // XP threshold for next level
+    function startQuest() {
+      const validQuests = [
+         { expectedCommand: "open resume.pdf", questText: "Type 'open resume.pdf' to view my CV.", reward: 100, achievement: "CV Explorer" },
+         { expectedCommand: "show projects", questText: "Type 'show projects' to explore my projects.", reward: 80, achievement: "Project Navigator" },
+         { expectedCommand: "show about", questText: "Type 'show about' to learn more about me.", reward: 60, achievement: "About Me" },
+         { expectedCommand: "new terminal", questText: "Type 'new terminal' to open a new terminal window.", reward: 50, achievement: "Multi-Terminal Master" },
+         { expectedCommand: "toggle theme", questText: "Type 'toggle theme' to switch between dark and light mode.", reward: 30, achievement: "Theme Switcher" },
+         { expectedCommand: "ls", questText: "Type 'ls' to list files and directories.", reward: 20, achievement: "File Explorer" },
+         { expectedCommand: "settings", questText: "Type 'settings' to configure your experience.", reward: 25, achievement: "Settings Expert" },
+         { expectedCommand: "quest", questText: "Type 'quest' to discover another quest.", reward: 10, achievement: "Quest Master" },
+         { expectedCommand: "score", questText: "Type 'score' to check your XP points.", reward: 10, achievement: "XP Collector" },
+         { expectedCommand: "achievements", questText: "Type 'achievements' to see your unlocked achievements.", reward: 15, achievement: "Achievement Hunter" }
+      ];
+      const availableQuests = validQuests.filter(q => !achievements.includes(q.achievement));
+      if(availableQuests.length > 0) {
+         window.currentQuest = availableQuests[Math.floor(Math.random() * availableQuests.length)];
+         appendOutput("🛠 New Quest: " + window.currentQuest.questText + " (Reward: " + window.currentQuest.reward + " XP, Achievement: " + window.currentQuest.achievement + ")");
+      } else {
+         appendOutput("✔️ No new quests available at the moment. You've completed them all!");
+      }
+    }
+    function checkQuestCompletion(cmd) {
+      if(window.currentQuest && cmd === window.currentQuest.expectedCommand){
+         if(!achievements.includes(window.currentQuest.achievement)){
+            score += window.currentQuest.reward;
+            achievements.push(window.currentQuest.achievement);
+            appendOutput("Quest completed! You earned " + window.currentQuest.reward + " XP and unlocked achievement: " + window.currentQuest.achievement);
+            showToast("Quest completed! +" + window.currentQuest.reward + " XP, " + window.currentQuest.achievement);
+            updateXPBar(score);
+         }
+         window.currentQuest = null;
+         return true;
+      }
+      return false;
+    }
+    function updateXPBar(xp) {
+      if(xp >= nextLevelXP){
+         level++;
+         showToast("Level Up! You are now level " + level);
+         nextLevelXP += 50;
+         updateLevelIndicator();
+      }
+      const progressPercent = Math.min((xp / nextLevelXP) * 100, 100);
+      document.getElementById('xp-bar').style.width = progressPercent + "%";
+    }
+    function updateLevelIndicator(){
+      document.getElementById('level-indicator').innerText = "Level " + level;
+    }
+
+    /* ==================== ADVANCED GAMIFICATION: CHALLENGES ==================== */
+    window.currentChallenge = null;
+    function startChallenge() {
+      const challenges = [
+         { command: "debug", description: "Type 'debug' to simulate a debugging challenge.", reward: 30, achievement: "Bug Buster" },
+         { command: "optimize", description: "Type 'optimize' to optimize a piece of code.", reward: 50, achievement: "Optimizer" }
+      ];
+      const selected = challenges[Math.floor(Math.random() * challenges.length)];
+      window.currentChallenge = selected;
+      appendOutput("⚡ Challenge: " + selected.description);
+    }
+    function checkChallenge(cmd) {
+      if(window.currentChallenge && cmd === window.currentChallenge.command){
+         if(!achievements.includes(window.currentChallenge.achievement)){
+            score += window.currentChallenge.reward;
+            achievements.push(window.currentChallenge.achievement);
+            appendOutput("Challenge completed! +" + window.currentChallenge.reward + " XP, " + window.currentChallenge.achievement);
+            showToast("Challenge completed! +" + window.currentChallenge.reward + " XP, " + window.currentChallenge.achievement);
+            updateXPBar(score);
+         }
+         window.currentChallenge = null;
+         return true;
+      }
+      return false;
+    }
+
+    /* ==================== CONTENT INTEGRATION: SYNC PROJECTS ==================== */
+    // Simulated fetch function for dynamic content integration
+    function fetchProjects() {
+      return new Promise((resolve, reject) => {
+         setTimeout(() => {
+            // Dummy updated project data
+            const data = {
+               "project1.txt": { type: "file", content: "Updated Project One: Advanced web development features integrated." },
+               "project2.txt": { type: "file", content: "Updated Project Two: Enhanced mobile experience with cutting-edge UI." },
+               "project3.txt": { type: "file", content: "Updated Project Three: Optimized desktop application with modern design." },
+               "project4.txt": { type: "file", content: "New Project Four: Dynamic content integration example." }
+            };
+            resolve(data);
+         }, 1000);
+      });
+    }
+    function syncProjects() {
+      appendOutput("Syncing projects...");
+      fetchProjects().then(updatedData => {
+         // Update the projects directory in the virtual file system
+         if(fileSystem["/"].children.projects){
+            fileSystem["/"].children.projects.children = updatedData;
+         }
+         appendOutput("Projects synchronized with latest content.");
+         openProjectsWindow();
+      });
+    }
+
+    /* ==================== WINDOW INTERACTIONS ==================== */
+    function smoothClose(el) {
+      playBeep(300, 0.15);
+      gsap.to(el, {duration: 0.3, opacity: 0, scale: 0.8, onComplete: () => el.remove()});
+    }
+    function makeDraggable(el) {
+      const header = el.querySelector('.window-header');
+      let offsetX = 0, offsetY = 0;
+      header.addEventListener('mousedown', function(e){
+         offsetX = e.clientX - el.offsetLeft;
+         offsetY = e.clientY - el.offsetTop;
+         document.addEventListener('mousemove', mouseMove);
+         document.addEventListener('mouseup', mouseUp);
+      });
+      function mouseMove(e){
+         el.style.left = (e.clientX - offsetX) + 'px';
+         el.style.top = (e.clientY - offsetY) + 'px';
+      }
+      function mouseUp(){
+         document.removeEventListener('mousemove', mouseMove);
+         document.removeEventListener('mouseup', mouseUp);
+      }
+    }
+    function makeResizable(el) {
+      const handle = el.querySelector('.resize-handle');
+      let startX, startY, startWidth, startHeight;
+      handle.addEventListener('mousedown', function(e){
+         e.stopPropagation();
+         el.style.transition = "none";
+         startX = e.clientX;
+         startY = e.clientY;
+         startWidth = parseInt(getComputedStyle(el).width, 10);
+         startHeight = parseInt(getComputedStyle(el).height, 10);
+         document.addEventListener('mousemove', resizeMouseMove);
+         document.addEventListener('mouseup', resizeMouseUp);
+      });
+      function resizeMouseMove(e){
+         el.style.width = (startWidth + e.clientX - startX) + 'px';
+         el.style.height = (startHeight + e.clientY - startY) + 'px';
+      }
+      function resizeMouseUp(){
+         document.removeEventListener('mousemove', resizeMouseMove);
+         document.removeEventListener('mouseup', resizeMouseUp);
+         el.style.transition = "width 0.2s, height 0.2s";
+      }
+    }
+    const mainTerminal = document.getElementById('main-terminal');
+    makeDraggable(mainTerminal);
+    makeResizable(mainTerminal);
+
+    /* ==================== TERMINAL INPUT & OUTPUT HANDLING ==================== */
     const terminalInput = document.getElementById('terminal-input');
-    
+    const terminalOutput = document.getElementById('terminal-output');
+    function appendOutput(text) {
+      terminalOutput.innerText += text + "\n";
+      const scrollContainer = terminalOutput.parentElement;
+      requestAnimationFrame(() => {
+         scrollContainer.scrollTo({ top: scrollContainer.scrollHeight, behavior: "smooth" });
+      });
+    }
     const helpText = `Available commands:
 help           - Show available commands
 clear          - Clear the terminal
 show projects  - Open Projects window
 show about     - Open About window
 new terminal   - Open a new terminal window
+sync projects  - Sync projects from external source
+challenge      - Start a random challenge
 settings       - Open settings window
 toggle theme   - Toggle between dark and light themes
 ls             - List files and directories
@@ -457,12 +668,6 @@ quest          - Start a new quest
 score          - Display your current score
 achievements   - Show your achievements
 `;
-    
-    function appendOutput(text) {
-      terminalOutput.innerText += text + "\n";
-      terminalOutput.scrollTop = terminalOutput.scrollHeight;
-    }
-    
     const welcomeText = `Welcome to DevTerminal
 Initializing developer terminal...
 Loading modules [██████████] 100%
@@ -471,245 +676,298 @@ Type 'help' for available commands.
     let index = 0;
     function typeWriter() {
       if (index < welcomeText.length) {
-        terminalOutput.innerText += welcomeText.charAt(index);
-        index++;
-        setTimeout(typeWriter, 40);
+         terminalOutput.innerText += welcomeText.charAt(index);
+         index++;
+         setTimeout(typeWriter, 40);
       } else {
-        terminalOutput.innerText += "\n";
-        terminalInput.focus();
+         terminalOutput.innerText += "\n";
+         terminalInput.focus();
       }
     }
     typeWriter();
-    
-    /* ------------------- File System Commands ------------------- */
-    function listFiles() {
-      let dir = getDirectory(currentPath);
-      if (!dir || dir.type !== "dir") {
-        appendOutput("Error: Current path is not a directory.");
-        return;
+
+    /* ==================== COMMAND SUGGESTIONS (AUTOCOMPLETE) ==================== */
+    const commandsList = [
+      "help", "clear", "show projects", "show about", "new terminal", 
+      "sync projects", "challenge", "settings", "toggle theme", "ls", "cd", "cat", "open", 
+      "quest", "score", "achievements"
+    ];
+    terminalInput.addEventListener("input", () => {
+      const value = terminalInput.value.toLowerCase();
+      const suggestionBox = document.getElementById("command-suggestions");
+      if (!value) {
+         suggestionBox.style.display = "none";
+         suggestionBox.innerHTML = "";
+         return;
       }
-      let names = Object.keys(dir.children);
+      const suggestions = commandsList.filter(cmd => cmd.startsWith(value));
+      if (suggestions.length === 0) {
+         suggestionBox.style.display = "none";
+         suggestionBox.innerHTML = "";
+      } else {
+         suggestionBox.style.display = "block";
+         suggestionBox.innerHTML = suggestions
+            .map(s => `<div class="suggestion">${s}</div>`)
+            .join("");
+      }
+    });
+    document.getElementById("command-suggestions").addEventListener("click", (e) => {
+      if (e.target.classList.contains("suggestion")) {
+         terminalInput.value = e.target.innerText;
+         document.getElementById("command-suggestions").style.display = "none";
+         terminalInput.focus();
+      }
+    });
+
+    /* ==================== ADVANCED TERMINAL FEATURES: COMMAND HISTORY ==================== */
+    let commandHistory = [];
+    let historyIndex = 0;
+    terminalInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+         const cmd = terminalInput.value.trim();
+         if (cmd) {
+            commandHistory.push(cmd);
+            historyIndex = commandHistory.length;
+            appendOutput("> " + cmd);
+            // Check if the command completes a challenge
+            if (!checkChallenge(cmd)) {
+               processCommand(cmd);
+            }
+            terminalInput.value = "";
+         }
+      } else if (e.key === "ArrowUp") {
+         if (historyIndex > 0) {
+            historyIndex--;
+            terminalInput.value = commandHistory[historyIndex];
+         }
+         e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+         if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            terminalInput.value = commandHistory[historyIndex];
+         } else {
+            historyIndex = commandHistory.length;
+            terminalInput.value = "";
+         }
+         e.preventDefault();
+      }
+    });
+
+    /* ==================== FILE SYSTEM COMMANDS ==================== */
+    function listFiles() {
+      const dir = getDirectory(currentPath);
+      if (!dir || dir.type !== "dir") {
+         appendOutput("Error: Current path is not a directory.");
+         return;
+      }
+      const names = Object.keys(dir.children);
       appendOutput(names.join("    "));
     }
-    
     function changeDirectory(folder) {
       if (folder === "..") {
-        if (currentPath === "/") {
-          appendOutput("Already at root directory.");
-        } else {
-          let parts = currentPath.split("/").filter(Boolean);
-          parts.pop();
-          currentPath = "/" + parts.join("/");
-          if (currentPath === "/") currentPath = "/";
-          appendOutput("Changed directory to " + currentPath);
-        }
+         if (currentPath === "/") {
+            appendOutput("Already at root directory.");
+         } else {
+            const parts = currentPath.split("/").filter(Boolean);
+            parts.pop();
+            currentPath = "/" + parts.join("/");
+            if (currentPath === "/") currentPath = "/";
+            appendOutput("Changed directory to " + currentPath);
+         }
       } else {
-        let dir = getDirectory(currentPath);
-        if (dir && dir.children && dir.children[folder] && dir.children[folder].type === "dir") {
-          currentPath = (currentPath === "/" ? "/" : currentPath + "/") + folder;
-          appendOutput("Changed directory to " + currentPath);
-        } else {
-          appendOutput("Directory not found: " + folder);
-        }
+         const dir = getDirectory(currentPath);
+         if (dir && dir.children && dir.children[folder] && dir.children[folder].type === "dir") {
+            currentPath = (currentPath === "/" ? "/" : currentPath + "/") + folder;
+            appendOutput("Changed directory to " + currentPath);
+         } else {
+            appendOutput("Directory not found: " + folder);
+         }
       }
     }
-    
     function displayFile(filename) {
-      let dir = getDirectory(currentPath);
+      const dir = getDirectory(currentPath);
       if (dir && dir.children && dir.children[filename] && dir.children[filename].type === "file") {
-        appendOutput(dir.children[filename].content);
+         appendOutput(dir.children[filename].content);
       } else {
-        appendOutput("File not found: " + filename);
+         appendOutput("File not found: " + filename);
       }
     }
-    
     function openFileWindow(filename) {
-      let dir = getDirectory(currentPath);
+      const dir = getDirectory(currentPath);
       if (dir && dir.children && dir.children[filename] && dir.children[filename].type === "file") {
-        createWindow(filename, `<pre>${dir.children[filename].content}</pre>`);
-        playBeep(600, 0.1);
+         createWindow(filename, `<pre>${dir.children[filename].content}</pre>`);
+         playBeep(600, 0.1);
       } else {
-        appendOutput("File not found: " + filename);
+         appendOutput("File not found: " + filename);
       }
     }
-    
-    /* ------------------- Process Terminal Commands ------------------- */
+
+    /* ==================== PROCESS TERMINAL COMMANDS ==================== */
     function processCommand(cmd) {
       playBeep();
       const lower = cmd.toLowerCase();
-      
       // Award quest if applicable.
       checkQuestCompletion(lower);
-      
       let handled = false;
-      
       if (lower === "help") {
-        appendOutput(helpText);
-        handled = true;
+         appendOutput(helpText);
+         handled = true;
       } else if (lower === "clear") {
-        terminalOutput.innerText = "";
-        handled = true;
+         terminalOutput.innerText = "";
+         handled = true;
       } else if (lower === "show projects") {
-        appendOutput("Opening Projects window...");
-        openProjectsWindow();
-        handled = true;
+         appendOutput("Opening Projects window...");
+         openProjectsWindow();
+         handled = true;
       } else if (lower === "show about") {
-        appendOutput("Opening About window...");
-        openAboutWindow();
-        handled = true;
+         appendOutput("Opening About window...");
+         openAboutWindow();
+         handled = true;
       } else if (lower === "new terminal") {
-        appendOutput("Opening a new terminal window...");
-        openNewTerminal();
-        handled = true;
+         appendOutput("Opening a new terminal window...");
+         openNewTerminal();
+         handled = true;
+      } else if (lower === "sync projects") {
+         syncProjects();
+         handled = true;
+      } else if (lower === "challenge") {
+         startChallenge();
+         handled = true;
       } else if (lower === "toggle theme") {
-        document.body.classList.toggle("light-mode");
-        appendOutput("Theme toggled.");
-        handled = true;
+         document.body.classList.toggle("light-mode");
+         appendOutput("Theme toggled.");
+         handled = true;
       } else if (lower === "ls") {
-        listFiles();
-        handled = true;
+         listFiles();
+         handled = true;
       } else if (lower.startsWith("cd ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          changeDirectory(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: cd [folder]");
-          handled = true;
-        }
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            changeDirectory(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: cd [folder]");
+            handled = true;
+         }
       } else if (lower.startsWith("cat ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          displayFile(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: cat [file]");
-          handled = true;
-        }
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            displayFile(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: cat [file]");
+            handled = true;
+         }
       } else if (lower.startsWith("open ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          openFileWindow(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: open [file]");
-          handled = true;
-        }
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            openFileWindow(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: open [file]");
+            handled = true;
+         }
       } else if (lower === "settings") {
-        appendOutput("Opening Settings window...");
-        openSettingsWindow();
-        handled = true;
+         appendOutput("Opening Settings window...");
+         openSettingsWindow();
+         handled = true;
       } else if (lower === "quest") {
-        startQuest();
-        handled = true;
+         startQuest();
+         handled = true;
       } else if (lower === "score") {
-        appendOutput("Current Score: " + score);
-        handled = true;
+         appendOutput("Current Score: " + score);
+         handled = true;
       } else if (lower === "achievements") {
-        appendOutput("Achievements: " + (achievements.length ? achievements.join(", ") : "None"));
-        handled = true;
+         appendOutput("Achievements: " + (achievements.length ? achievements.join(", ") : "None"));
+         handled = true;
       } else if (lower === "easter egg") {
-        gsap.to("#desktop", {duration: 1, rotation: 360});
-        appendOutput("You found the easter egg!");
-        handled = true;
+         gsap.to("#desktop", {duration: 1, rotation: 360});
+         appendOutput("You found the easter egg!");
+         handled = true;
       }
-      
       if (!handled) {
-        appendOutput(`Command not recognized: ${cmd}`);
+         appendOutput(`Command not recognized: ${cmd}`);
       }
       terminalInput.focus();
     }
-    
     if (!window.__terminalInputInitialized) {
-      terminalInput.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          const cmd = terminalInput.value.trim();
-          appendOutput("> " + cmd);
-          processCommand(cmd);
-          terminalInput.value = "";
-        }
-      });
       window.__terminalInputInitialized = true;
     }
-    
-    /* ------------------- Window Creation Functions ------------------- */
+
+    /* ==================== WINDOW CREATION FUNCTIONS ==================== */
     function createWindow(title, contentHTML) {
       playBeep(520, 0.1);
       const win = document.createElement("div");
-      win.className = "window";
+      win.className = "window default";
       win.style.width = "500px";
       win.style.height = "300px";
       win.style.top = Math.random() * 200 + 100 + "px";
       win.style.left = Math.random() * 200 + 100 + "px";
       win.innerHTML = `
-        <div class="window-header">
-          <span class="title">${title}</span>
-          <span class="close-btn" aria-label="Close window">&times;</span>
-        </div>
-        <div class="window-content">${contentHTML}</div>
-        <div class="resize-handle"></div>
+         <div class="window-header">
+            <span class="title">${title}</span>
+            <span class="close-btn" aria-label="Close window">&times;</span>
+         </div>
+         <div class="window-content">${contentHTML}</div>
+         <div class="resize-handle"></div>
       `;
       document.getElementById("desktop").appendChild(win);
       makeDraggable(win);
       makeResizable(win);
       win.querySelector(".close-btn").addEventListener("click", function() {
-        smoothClose(win);
+         smoothClose(win);
       });
-      gsap.from(win, {duration: window.customAnimationSpeed, scale: 0.8, opacity: 0});
+      gsap.from(win, {duration: window.customAnimationSpeed, scale: 0.8, opacity: 0, ease: "back.out(1.7)"});
       return win;
     }
-    
     function openProjectsWindow() {
       const contentHTML = `
-        <h2>Projects</h2>
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-          <div class="project-item" onclick="openProjectDetail('Project One', 'A creative project showcasing my skills in web development.', 'https://via.placeholder.com/600x400.png?text=Project+One')">
-            <strong>Project One</strong><br>
-            A creative project showcasing my skills in web development.
-          </div>
-          <div class="project-item" onclick="openProjectDetail('Project Two', 'A mobile app that revolutionizes user interaction.', 'https://via.placeholder.com/600x400.png?text=Project+Two')">
-            <strong>Project Two</strong><br>
-            A mobile app that revolutionizes user interaction.
-          </div>
-          <div class="project-item" onclick="openProjectDetail('Project Three', 'A desktop application built for efficiency and productivity.', 'https://via.placeholder.com/600x400.png?text=Project+Three')">
-            <strong>Project Three</strong><br>
-            A desktop application built for efficiency and productivity.
-          </div>
-        </div>
+         <h2>Projects</h2>
+         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <div class="project-item" onclick="openProjectDetail('Project One', 'A creative project showcasing my skills in web development.', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+               <strong>Project One</strong><br>
+               A creative project showcasing my skills in web development.
+            </div>
+            <div class="project-item" onclick="openProjectDetail('Project Two', 'A mobile app that revolutionizes user interaction.', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+               <strong>Project Two</strong><br>
+               A mobile app that revolutionizes user interaction.
+            </div>
+            <div class="project-item" onclick="openProjectDetail('Project Three', 'A desktop application built for efficiency and productivity.', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+               <strong>Project Three</strong><br>
+               A desktop application built for efficiency and productivity.
+            </div>
+         </div>
       `;
       createWindow("Projects", contentHTML);
     }
-    
     function openProjectDetail(title, description, mediaURL) {
       const contentHTML = `
-        <h2>${title}</h2>
-        <img src="${mediaURL}" alt="${title}" style="max-width: 100%; border: 1px solid #444; border-radius: 5px; margin-bottom: 10px;">
-        <p>${description}</p>
+         <h2>${title}</h2>
+         <iframe width="100%" height="250" src="${mediaURL}" frameborder="0" allowfullscreen></iframe>
+         <p>${description}</p>
       `;
       const win = createWindow(title, contentHTML);
-      // Trigger a reading quest for project details (only award once)
-      if (title.toLowerCase().startsWith("project") && !achievements.includes("Thorough Reader")) {
-        setTimeout(() => {
-          if (document.body.contains(win)) {
-            score += 20;
-            achievements.push("Thorough Reader");
-            appendOutput("Quest completed! You earned 20 XP and unlocked achievement: Thorough Reader");
-            showToast("Quest completed! +20 XP, Thorough Reader");
-          }
-        }, 10000); // Award after 10 seconds if the window is still open.
+      if(title.toLowerCase().startsWith("project") && !achievements.includes("Thorough Reader")){
+         setTimeout(() => {
+            if(document.body.contains(win)){
+               score += 20;
+               achievements.push("Thorough Reader");
+               appendOutput("Quest completed! You earned 20 XP and unlocked achievement: Thorough Reader");
+               showToast("Quest completed! +20 XP, Thorough Reader");
+               updateXPBar(score);
+            }
+         }, 10000);
       }
     }
-    
     function openAboutWindow() {
       const contentHTML = `
-        <h2>About Me</h2>
-        <p>I'm a passionate developer who loves blending creativity with technology.
-        My journey in software development has been fueled by curiosity and a desire
-        to create interactive experiences that push the boundaries of what's possible.</p>
+         <h2>About Me</h2>
+         <p>I'm a passionate developer who loves blending creativity with technology.
+         My journey in software development has been fueled by curiosity and a desire
+         to create interactive experiences that push the boundaries of what's possible.</p>
       `;
       createWindow("About", contentHTML);
     }
-    
     function openNewTerminal() {
       const newTerm = document.createElement("div");
       newTerm.className = "window";
@@ -718,213 +976,243 @@ Type 'help' for available commands.
       newTerm.style.top = Math.random() * 200 + 150 + "px";
       newTerm.style.left = Math.random() * 200 + 150 + "px";
       newTerm.innerHTML = `
-        <div class="window-header">
-          <span class="title">DevTerminal</span>
-          <span class="close-btn" aria-label="Close window">&times;</span>
-        </div>
-        <div class="window-content">
-          <div class="terminal-output"></div>
-          <div class="terminal-input-line">
-            <span class="terminal-prompt">&gt;</span>
-            <input type="text" class="terminal-input" autocomplete="off" aria-label="Terminal command input" />
-          </div>
-        </div>
-        <div class="resize-handle"></div>
+         <div class="window-header">
+            <span class="title">DevTerminal</span>
+            <span class="close-btn" aria-label="Close window">&times;</span>
+         </div>
+         <div class="window-content">
+            <div class="terminal-output"></div>
+            <div class="terminal-input-line">
+               <span class="terminal-prompt">&gt;</span>
+               <input type="text" class="terminal-input" autocomplete="off" aria-label="Terminal command input" />
+            </div>
+         </div>
+         <div class="resize-handle"></div>
       `;
       document.getElementById("desktop").appendChild(newTerm);
       makeDraggable(newTerm);
       makeResizable(newTerm);
       newTerm.querySelector(".close-btn").addEventListener("click", function() {
-        smoothClose(newTerm);
+         smoothClose(newTerm);
       });
       const output = newTerm.querySelector(".terminal-output");
       const input = newTerm.querySelector(".terminal-input");
       function appendOutputNew(text) {
-        output.innerText += text + "\n";
-        output.scrollTop = output.scrollHeight;
+         output.innerText += text + "\n";
+         output.scrollTo({ top: output.scrollHeight, behavior: "smooth" });
       }
       const welcome = `Welcome to a new DevTerminal
 Type 'help' for available commands.
 `;
       let i = 0;
       function typeWriterNew() {
-        if (i < welcome.length) {
-          output.innerText += welcome.charAt(i);
-          i++;
-          setTimeout(typeWriterNew, 40);
-        } else {
-          output.innerText += "\n";
-          input.focus();
-        }
+         if (i < welcome.length) {
+            output.innerText += welcome.charAt(i);
+            i++;
+            setTimeout(typeWriterNew, 40);
+         } else {
+            output.innerText += "\n";
+            input.focus();
+         }
       }
       typeWriterNew();
       input.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          const cmd = input.value.trim();
-          appendOutputNew("> " + cmd);
-          if (cmd.toLowerCase() === "clear") {
-            output.innerText = "";
-          } else {
-            appendOutputNew(`Command not recognized: ${cmd}`);
-          }
-          input.value = "";
-          input.focus();
-        }
+         if (e.key === "Enter") {
+            const cmd = input.value.trim();
+            appendOutputNew("> " + cmd);
+            if (cmd.toLowerCase() === "clear") {
+               output.innerText = "";
+            } else {
+               appendOutputNew(`Command not recognized: ${cmd}`);
+            }
+            input.value = "";
+            input.focus();
+         }
       });
     }
-    
-    /* ------------------- Settings Window ------------------- */
+
+    /* ==================== SETTINGS WINDOW ==================== */
     function openSettingsWindow() {
       const contentHTML = `
-        <h2>Settings</h2>
-        <div>
-          <label for="theme-select">Theme:</label>
-          <select id="theme-select">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-          </select>
-        </div>
-        <div style="margin-top:10px;">
-          <label for="animation-speed">Animation Speed (s):</label>
-          <input type="number" id="animation-speed" value="0.5" step="0.1" min="0.1" style="width: 50px;">
-        </div>
-        <div style="margin-top:10px;">
-          <label for="particles-toggle">Interactive Particles:</label>
-          <input type="checkbox" id="particles-toggle" checked>
-        </div>
-        <button id="save-settings" style="margin-top:10px;">Save Settings</button>
+         <h2>Settings</h2>
+         <div>
+            <label for="theme-select">Theme:</label>
+            <select id="theme-select">
+               <option value="dark">Dark</option>
+               <option value="light">Light</option>
+            </select>
+         </div>
+         <div style="margin-top:10px;">
+            <label for="animation-speed">Animation Speed (s):</label>
+            <input type="number" id="animation-speed" value="0.5" step="0.1" min="0.1" style="width: 50px;">
+         </div>
+         <div style="margin-top:10px;">
+            <label for="particles-toggle">Interactive Particles:</label>
+            <input type="checkbox" id="particles-toggle" checked>
+         </div>
+         <div style="margin-top:10px;">
+            <label for="window-theme-select">Window Theme:</label>
+            <select id="window-theme-select">
+               <option value="default">Default</option>
+               <option value="retro">Retro</option>
+               <option value="futuristic">Futuristic</option>
+            </select>
+         </div>
+         <div style="margin-top:10px;">
+            <label for="ui-style-select">UI Style:</label>
+            <select id="ui-style-select">
+               <option value="classic">Classic</option>
+               <option value="modern">Modern</option>
+            </select>
+         </div>
+         <button id="save-settings" style="margin-top:10px;">Save Settings</button>
       `;
       createWindow("Settings", contentHTML);
       setTimeout(() => {
-        const themeSelect = document.getElementById("theme-select");
-        const animationSpeedInput = document.getElementById("animation-speed");
-        const particlesToggle = document.getElementById("particles-toggle");
-        const saveBtn = document.getElementById("save-settings");
-        saveBtn.addEventListener("click", () => {
-          const theme = themeSelect.value;
-          if (theme === "dark") {
-            document.body.classList.remove("light-mode");
-          } else {
-            document.body.classList.add("light-mode");
-          }
-          localStorage.setItem('theme', theme);
-          window.customAnimationSpeed = parseFloat(animationSpeedInput.value) || 0.5;
-          if (particlesToggle.checked) {
-            document.getElementById("particles-js").style.display = "block";
-          } else {
-            document.getElementById("particles-js").style.display = "none";
-          }
-          appendOutput("Settings saved.");
-          showToast("Settings saved!");
-        });
+         const themeSelect = document.getElementById("theme-select");
+         const animationSpeedInput = document.getElementById("animation-speed");
+         const particlesToggle = document.getElementById("particles-toggle");
+         const windowThemeSelect = document.getElementById("window-theme-select");
+         const uiStyleSelect = document.getElementById("ui-style-select");
+         const saveBtn = document.getElementById("save-settings");
+         saveBtn.addEventListener("click", () => {
+            const theme = themeSelect.value;
+            if (theme === "dark") {
+               document.body.classList.remove("light-mode");
+            } else {
+               document.body.classList.add("light-mode");
+            }
+            localStorage.setItem('theme', theme);
+            window.customAnimationSpeed = parseFloat(animationSpeedInput.value) || 0.5;
+            if (particlesToggle.checked) {
+               document.getElementById("particles-js").style.display = "block";
+            } else {
+               document.getElementById("particles-js").style.display = "none";
+            }
+            updateWindowThemes(windowThemeSelect.value);
+            const uiStyle = uiStyleSelect.value;
+            if (uiStyle === "modern") {
+               document.body.classList.add("modern");
+               localStorage.setItem("uiStyle", "modern");
+            } else {
+               document.body.classList.remove("modern");
+               localStorage.setItem("uiStyle", "classic");
+            }
+            appendOutput("Settings saved.");
+            showToast("Settings saved!");
+         });
       }, 100);
     }
-    
-    /* ------------------- Process Terminal Commands ------------------- */
+    function updateWindowThemes(selectedTheme) {
+      document.querySelectorAll('#desktop .window').forEach(win => {
+         win.classList.remove('default', 'retro', 'futuristic');
+         win.classList.add(selectedTheme);
+      });
+    }
+
+    /* ==================== PROCESS TERMINAL COMMANDS ==================== */
     function processCommand(cmd) {
       playBeep();
       const lower = cmd.toLowerCase();
-      
-      // Award quest if applicable.
-      checkQuestCompletion(lower);
-      
-      let handled = false;
-      
-      if (lower === "help") {
-        appendOutput(helpText);
-        handled = true;
-      } else if (lower === "clear") {
-        terminalOutput.innerText = "";
-        handled = true;
-      } else if (lower === "show projects") {
-        appendOutput("Opening Projects window...");
-        openProjectsWindow();
-        handled = true;
-      } else if (lower === "show about") {
-        appendOutput("Opening About window...");
-        openAboutWindow();
-        handled = true;
-      } else if (lower === "new terminal") {
-        appendOutput("Opening a new terminal window...");
-        openNewTerminal();
-        handled = true;
-      } else if (lower === "toggle theme") {
-        document.body.classList.toggle("light-mode");
-        appendOutput("Theme toggled.");
-        handled = true;
-      } else if (lower === "ls") {
-        listFiles();
-        handled = true;
-      } else if (lower.startsWith("cd ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          changeDirectory(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: cd [folder]");
-          handled = true;
-        }
-      } else if (lower.startsWith("cat ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          displayFile(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: cat [file]");
-          handled = true;
-        }
-      } else if (lower.startsWith("open ")) {
-        let parts = cmd.split(" ");
-        if (parts.length >= 2) {
-          openFileWindow(parts[1]);
-          handled = true;
-        } else {
-          appendOutput("Usage: open [file]");
-          handled = true;
-        }
-      } else if (lower === "settings") {
-        appendOutput("Opening Settings window...");
-        openSettingsWindow();
-        handled = true;
-      } else if (lower === "quest") {
-        startQuest();
-        handled = true;
-      } else if (lower === "score") {
-        appendOutput("Current Score: " + score);
-        handled = true;
-      } else if (lower === "achievements") {
-        appendOutput("Achievements: " + (achievements.length ? achievements.join(", ") : "None"));
-        handled = true;
-      } else if (lower === "easter egg") {
-        gsap.to("#desktop", {duration: 1, rotation: 360});
-        appendOutput("You found the easter egg!");
-        handled = true;
+      // Check if it's a challenge command (if a challenge is active)
+      if(window.currentChallenge && lower === window.currentChallenge.command) {
+         checkChallenge(lower);
+         return;
       }
-      
+      // Check for quest completion
+      checkQuestCompletion(lower);
+      let handled = false;
+      if (lower === "help") {
+         appendOutput(helpText);
+         handled = true;
+      } else if (lower === "clear") {
+         terminalOutput.innerText = "";
+         handled = true;
+      } else if (lower === "show projects") {
+         appendOutput("Opening Projects window...");
+         openProjectsWindow();
+         handled = true;
+      } else if (lower === "show about") {
+         appendOutput("Opening About window...");
+         openAboutWindow();
+         handled = true;
+      } else if (lower === "new terminal") {
+         appendOutput("Opening a new terminal window...");
+         openNewTerminal();
+         handled = true;
+      } else if (lower === "sync projects") {
+         syncProjects();
+         handled = true;
+      } else if (lower === "challenge") {
+         startChallenge();
+         handled = true;
+      } else if (lower === "toggle theme") {
+         document.body.classList.toggle("light-mode");
+         appendOutput("Theme toggled.");
+         handled = true;
+      } else if (lower === "ls") {
+         listFiles();
+         handled = true;
+      } else if (lower.startsWith("cd ")) {
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            changeDirectory(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: cd [folder]");
+            handled = true;
+         }
+      } else if (lower.startsWith("cat ")) {
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            displayFile(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: cat [file]");
+            handled = true;
+         }
+      } else if (lower.startsWith("open ")) {
+         const parts = cmd.split(" ");
+         if (parts.length >= 2) {
+            openFileWindow(parts[1]);
+            handled = true;
+         } else {
+            appendOutput("Usage: open [file]");
+            handled = true;
+         }
+      } else if (lower === "settings") {
+         appendOutput("Opening Settings window...");
+         openSettingsWindow();
+         handled = true;
+      } else if (lower === "quest") {
+         startQuest();
+         handled = true;
+      } else if (lower === "score") {
+         appendOutput("Current Score: " + score);
+         handled = true;
+      } else if (lower === "achievements") {
+         appendOutput("Achievements: " + (achievements.length ? achievements.join(", ") : "None"));
+         handled = true;
+      } else if (lower === "easter egg") {
+         gsap.to("#desktop", {duration: 1, rotation: 360});
+         appendOutput("You found the easter egg!");
+         handled = true;
+      }
       if (!handled) {
-        appendOutput(`Command not recognized: ${cmd}`);
+         appendOutput(`Command not recognized: ${cmd}`);
       }
       terminalInput.focus();
     }
-    
     if (!window.__terminalInputInitialized) {
-      terminalInput.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          const cmd = terminalInput.value.trim();
-          appendOutput("> " + cmd);
-          processCommand(cmd);
-          terminalInput.value = "";
-        }
-      });
       window.__terminalInputInitialized = true;
     }
-    
-    /* ------------------- Service Worker Registration (PWA) ------------------- */
+
+    /* ==================== SERVICE WORKER REGISTRATION (PWA) ==================== */
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('sw.js')
-          .then(registration => console.log('Service Worker registered with scope:', registration.scope))
-          .catch(error => console.error('Service Worker registration failed:', error));
+         navigator.serviceWorker.register('sw.js')
+            .then(registration => console.log('Service Worker registered with scope:', registration.scope))
+            .catch(error => console.error('Service Worker registration failed:', error));
       });
     }
   </script>
