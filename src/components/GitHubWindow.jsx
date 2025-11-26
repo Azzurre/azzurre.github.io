@@ -11,7 +11,9 @@ const GitHubWindow = () => {
       .then(r => r.json())
       .then(setProfile)
       .catch(() => {});
-    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`)
+    fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`
+    )
       .then(r => r.json())
       .then(setRepos)
       .catch(() => {});
@@ -27,7 +29,8 @@ const GitHubWindow = () => {
           <strong>{profile.name || profile.login}</strong>
           <p>{profile.bio}</p>
           <p style={{ fontSize: "13px", opacity: 0.8 }}>
-            Public repos: {profile.public_repos} · Followers: {profile.followers}
+            Public repos: {profile.public_repos} · Followers:{" "}
+            {profile.followers}
           </p>
           <a href={profile.html_url} target="_blank" rel="noreferrer">
             View GitHub Profile

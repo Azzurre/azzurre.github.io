@@ -2,7 +2,8 @@ import React from "react";
 import { useGameState } from "../context/GameStateContext.jsx";
 
 const ProfileWindow = () => {
-  const { score, level, nextLevelXP, achievements } = useGameState();
+  const { score, level, nextLevelXP, achievements, skillXP } =
+    useGameState();
   const percent = Math.min((score / nextLevelXP) * 100, 100).toFixed(0);
 
   const shareText = encodeURIComponent(
@@ -12,6 +13,31 @@ const ProfileWindow = () => {
   );
   const shareUrl = encodeURIComponent(window.location.href);
   const linkedInShare = `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}&text=${shareText}`;
+
+  const renderSkillBar = (label, value) => {
+    const clamped = Math.min(value, 100);
+    return (
+      <div style={{ marginBottom: "6px" }}>
+        <div style={{ fontSize: "13px", marginBottom: "2px" }}>{label}</div>
+        <div
+          style={{
+            height: "6px",
+            background: "var(--xp-bar-bg)",
+            borderRadius: "999px",
+            overflow: "hidden"
+          }}
+        >
+          <div
+            style={{
+              width: `${clamped}%`,
+              height: "100%",
+              background: "var(--xp-bar-fill)"
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -26,7 +52,14 @@ const ProfileWindow = () => {
         </div>
       </div>
 
-      <div>
+      <section style={{ marginTop: "10px" }}>
+        <h3>Skill Breakdown (Hidden RPG)</h3>
+        {renderSkillBar("Web Development", skillXP.web)}
+        {renderSkillBar("Game Development", skillXP.game)}
+        {renderSkillBar("Systems / Backend", skillXP.systems)}
+      </section>
+
+      <div style={{ marginTop: "12px" }}>
         <h3>Achievements</h3>
         {achievements.length === 0 ? (
           <p>

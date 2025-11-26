@@ -5,13 +5,24 @@ import { useGameState } from "../context/GameStateContext.jsx";
 const ProjectsWindow = ({ showToast }) => {
   const [projects, setProjects] = useState([]);
   const [selected, setSelected] = useState(null);
-  const { achievements, addXP } = useGameState();
+  const { achievements, addXP, addSkillXP, registerProjectView } =
+    useGameState();
 
   useEffect(() => {
     setProjects(projectsData);
   }, []);
 
-  // Thorough Reader achievement: keep a project open for 10 seconds
+  const handleSelect = p => {
+    setSelected(p);
+    registerProjectView && registerProjectView();
+
+    if (addSkillXP) {
+      if (p.id === "weather-app") addSkillXP("web", 10);
+      if (p.id === "asteroid-miner") addSkillXP("game", 12);
+      if (p.id === "algo-trader") addSkillXP("systems", 15);
+    }
+  };
+
   useEffect(() => {
     if (!selected) return;
     const hasAchievement = achievements.includes("Thorough Reader");
@@ -36,7 +47,7 @@ const ProjectsWindow = ({ showToast }) => {
           <div
             key={p.id}
             className="project-item"
-            onClick={() => setSelected(p)}
+            onClick={() => handleSelect(p)}
           >
             <strong>{p.title}</strong>
             <p>{p.short}</p>

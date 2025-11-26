@@ -5,13 +5,11 @@ const AssistantWindow = () => {
     <div>
       <h2>Dev Assistant (Concept)</h2>
       <p>
-        This window represents an AI assistant mode where I could integrate a model
-        (like ChatGPT) via an API to answer questions about my projects, decisions,
-        and code.
+        This window represents an AI assistant mode where I could integrate a
+        model (like ChatGPT) via an API to answer questions about my projects,
+        decisions, and code.
       </p>
-      <p style={{ marginTop: "8px" }}>
-        Example prompts you might ask:
-      </p>
+      <p style={{ marginTop: "8px" }}>Example prompts you might ask:</p>
       <ul style={{ marginTop: "4px" }}>
         <li>Why did you choose React for this project?</li>
         <li>How does the XP and quest system work internally?</li>

@@ -2,65 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const GameStateContext = createContext(null);
 
-const QUESTS = [
-  {
-    expectedCommand: "open resume",
-    questText: "Type 'open resume' to view my CV.",
-    reward: 100,
-    achievement: "CV Explorer"
-  },
-  {
-    expectedCommand: "show projects",
-    questText: "Type 'show projects' to explore my projects.",
-    reward: 80,
-    achievement: "Project Navigator"
-  },
-  {
-    expectedCommand: "show about",
-    questText: "Type 'show about' to learn more about me.",
-    reward: 60,
-    achievement: "About Me"
-  },
-  {
-    expectedCommand: "settings",
-    questText: "Type 'settings' to configure your experience.",
-    reward: 25,
-    achievement: "Settings Expert"
-  },
-  {
-    expectedCommand: "quest",
-    questText: "Type 'quest' to discover another quest.",
-    reward: 10,
-    achievement: "Quest Master"
-  },
-  {
-    expectedCommand: "score",
-    questText: "Type 'score' to check your XP points.",
-    reward: 10,
-    achievement: "XP Collector"
-  },
-  {
-    expectedCommand: "achievements",
-    questText: "Type 'achievements' to see your unlocked achievements.",
-    reward: 15,
-    achievement: "Achievement Hunter"
-  }
-];
+import { QUESTS, CHALLENGES } from "../config/gameConfig.js";
 
-const CHALLENGES = [
-  {
-    command: "debug",
-    description: "Type 'debug' to simulate a debugging challenge.",
-    reward: 30,
-    achievement: "Bug Buster"
-  },
-  {
-    command: "optimize",
-    description: "Type 'optimize' to optimize a piece of code.",
-    reward: 50,
-    achievement: "Optimizer"
-  }
-];
 
 export const GameStateProvider = ({ children }) => {
   const [score, setScore] = useState(0);
@@ -69,14 +12,35 @@ export const GameStateProvider = ({ children }) => {
   const [achievements, setAchievements] = useState([]);
   const [currentQuest, setCurrentQuest] = useState(null);
   const [currentChallenge, setCurrentChallenge] = useState(null);
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "dark"
-  );
+
+  const [theme, setTheme] = useState(() => {
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored;
+    const hour = new Date().getHours();
+    // Daytime: lighter / classic, Night: dark / cyber
+    if (hour >= 7 && hour < 19) return "light";
+    return "dark";
+  });
   const [uiStyle, setUiStyle] = useState(
     localStorage.getItem("uiStyle") || "classic"
   );
+
   const [adminMode, setAdminMode] = useState(false);
   const [commandUsage, setCommandUsage] = useState({});
+  const [windowOpenCount, setWindowOpenCount] = useState(0);
+  const [projectViewCount, setProjectViewCount] = useState(0);
+  const [startTime] = useState(() => Date.now());
+
+  const [skillXP, setSkillXP] = useState({
+    web: 0,
+    game: 0,
+    systems: 0
+  });
+
+  const [lastUnlockedAchievement, setLastUnlockedAchievement] = useState(null);
+
+  const [visitorProfile, setVisitorProfile] = useState("neutral"); // neutral | power | visual
+  const [recruiterMode, setRecruiterMode] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("light-mode", theme === "light");
@@ -96,17 +60,54 @@ export const GameStateProvider = ({ children }) => {
     });
 
     if (achievementName) {
-      setAchievements(prev =>
-        prev.includes(achievementName) ? prev : [...prev, achievementName]
-      );
+      setAchievements(prev => {
+        if (prev.includes(achievementName)) return prev;
+        setLastUnlockedAchievement(achievementName);
+        return [...prev, achievementName];
+      });
     }
   };
 
-  const incrementCommandUsage = cmd => {
-    setCommandUsage(prev => ({
+  const addSkillXP = (category, amount) => {
+    setSkillXP(prev => ({
       ...prev,
-      [cmd]: (prev[cmd] || 0) + 1
+      [category]: (prev[category] || 0) + amount
     }));
+  };
+
+  const incrementCommandUsage = cmd => {
+    setCommandUsage(prev => {
+      const updated = {
+        ...prev,
+        [cmd]: (prev[cmd] || 0) + 1
+      };
+      const totalCommands = Object.values(updated).reduce(
+        (sum, v) => sum + v,
+        0
+      );
+      if (totalCommands >= 10) {
+        setVisitorProfile("power");
+      }
+      return updated;
+    });
+  };
+
+  const registerWindowOpen = () => {
+    setWindowOpenCount(prev => {
+      const next = prev + 1;
+      const totalCommands = Object.values(commandUsage).reduce(
+        (sum, v) => sum + v,
+        0
+      );
+      if (next >= 6 && totalCommands < 5) {
+        setVisitorProfile("visual");
+      }
+      return next;
+    });
+  };
+
+  const registerProjectView = () => {
+    setProjectViewCount(prev => prev + 1);
   };
 
   const startQuest = appendOutput => {
@@ -178,6 +179,10 @@ export const GameStateProvider = ({ children }) => {
     setAdminMode(v => !v);
   };
 
+  const toggleRecruiterMode = () => {
+    setRecruiterMode(v => !v);
+  };
+
   const value = {
     score,
     level,
@@ -189,15 +194,32 @@ export const GameStateProvider = ({ children }) => {
     setTheme,
     uiStyle,
     setUiStyle,
+
     adminMode,
     toggleAdminMode,
     commandUsage,
+    incrementCommandUsage,
+    windowOpenCount,
+    registerWindowOpen,
+    projectViewCount,
+    registerProjectView,
+    startTime,
+
+    skillXP,
+    addSkillXP,
+
+    visitorProfile,
+    recruiterMode,
+    toggleRecruiterMode,
+
+    lastUnlockedAchievement,
+    setLastUnlockedAchievement,
+
     addXP,
     startQuest,
     handleQuestCommand,
     startChallenge,
-    handleChallengeCommand,
-    incrementCommandUsage
+    handleChallengeCommand
   };
 
   return (

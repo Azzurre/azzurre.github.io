@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 const VolumeControl = () => {
   const [volume, setVolume] = useState(0.1);
-
-  // Hook into audio system if you add sounds later
   return (
     <div id="volume-control-container">
       Volume:

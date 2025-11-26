@@ -7,7 +7,7 @@ const ParticlesBackground = () => {
         particles: {
           number: { value: 100, density: { enable: true, value_area: 1000 } },
           color: { value: "#ffffff" },
-          shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
+          shape: { type: "circle" },
           opacity: {
             value: 0.5,
             random: true,
@@ -30,10 +30,8 @@ const ParticlesBackground = () => {
             speed: 2,
             direction: "none",
             random: false,
-            straight: false,
             out_mode: "out",
-            bounce: false,
-            attract: { enable: true, rotateX: 600, rotateY: 1200 }
+            bounce: false
           }
         },
         interactivity: {
@@ -45,16 +43,7 @@ const ParticlesBackground = () => {
           },
           modes: {
             grab: { distance: 200, line_linked: { opacity: 1 } },
-            bubble: {
-              distance: 250,
-              size: 0,
-              duration: 2,
-              opacity: 0,
-              speed: 3
-            },
-            repulse: { distance: 150, duration: 0.4 },
-            push: { particles_nb: 4 },
-            remove: { particles_nb: 2 }
+            push: { particles_nb: 4 }
           }
         },
         retina_detect: true

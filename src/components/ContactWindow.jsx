@@ -24,13 +24,18 @@ const ContactWindow = () => {
       </form>
       <p style={{ marginTop: "10px", fontSize: "13px", opacity: 0.8 }}>
         Or connect via{" "}
-        <a href="https://github.com/yourusername" target="_blank" rel="noreferrer">
+        <a href="https://github.com/Azzurre" target="_blank" rel="noreferrer">
           GitHub
         </a>{" "}
         or{" "}
-        <a href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.linkedin.com/in/your-profile"
+          target="_blank"
+          rel="noreferrer"
+        >
           LinkedIn
-        </a>.
+        </a>
+        .
       </p>
     </div>
   );

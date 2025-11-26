@@ -17,10 +17,7 @@ const SettingsWindow = ({ showToast }) => {
 
       <div className="settings-row" style={{ marginTop: "10px" }}>
         <label>Theme preset&nbsp;</label>
-        <select
-          value={theme}
-          onChange={e => setTheme(e.target.value)}
-        >
+        <select value={theme} onChange={e => setTheme(e.target.value)}>
           <option value="dark">Dark</option>
           <option value="light">Light</option>
           <option value="terminal">Retro Terminal</option>
@@ -30,10 +27,7 @@ const SettingsWindow = ({ showToast }) => {
 
       <div className="settings-row" style={{ marginTop: "10px" }}>
         <label>UI Style&nbsp;</label>
-        <select
-          value={uiStyle}
-          onChange={e => setUiStyle(e.target.value)}
-        >
+        <select value={uiStyle} onChange={e => setUiStyle(e.target.value)}>
           <option value="classic">Classic</option>
           <option value="modern">Modern</option>
         </select>

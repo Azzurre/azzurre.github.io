@@ -5,8 +5,8 @@ const ResumeWindow = () => {
     <div>
       <h2>Resume</h2>
       <p>
-        Below is a quick interactive summary of my experience. For a full CV, use
-        the download link at the bottom.
+        Below is a quick interactive summary of my experience. For a full CV,
+        use the download link at the bottom.
       </p>
 
       <section style={{ marginTop: "10px" }}>
@@ -23,14 +23,16 @@ const ResumeWindow = () => {
             <strong>Game Development</strong> – Asteroid Miner
             <br />
             <span style={{ fontSize: "12px", opacity: 0.8 }}>
-              Procedural generation, object pooling, and performance-focused gameplay.
+              Procedural generation, object pooling, and performance-focused
+              gameplay.
             </span>
           </li>
           <li style={{ marginTop: "6px" }}>
             <strong>Algorithmic Trading Project</strong>
             <br />
             <span style={{ fontSize: "12px", opacity: 0.8 }}>
-              C# backtesting engine, strategy evaluation, and data visualization.
+              C# backtesting engine, strategy evaluation, and data
+              visualization.
             </span>
           </li>
         </ul>
@@ -44,7 +46,12 @@ const ResumeWindow = () => {
       </section>
 
       <section style={{ marginTop: "10px" }}>
-        <a href="/assets/resume.pdf" target="_blank" rel="noreferrer" className="btn-outline">
+        <a
+          href="/assets/resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="btn-outline"
+        >
           Download Full CV (PDF)
         </a>
       </section>

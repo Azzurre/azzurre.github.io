@@ -4,12 +4,12 @@ const AboutWindow = () => (
   <div>
     <h2>About Me</h2>
     <p>
-      I'm Dimitri, a software developer with experience in web, game, and
-      systems development. I enjoy building interactive interfaces like this
-      DevTerminal, as well as solid, maintainable backends and tooling.
+      I'm Dimitri, a software developer who enjoys building interactive
+      experiences, from web apps and APIs to games and tools like this
+      DevTerminal.
     </p>
     <p style={{ marginTop: "10px" }}>
-      Tech I enjoy working with: <br />
+      Tech I enjoy working with:{" "}
       <strong>JavaScript, React, C#, C++, Java, Unity, Node.js</strong>
     </p>
   </div>

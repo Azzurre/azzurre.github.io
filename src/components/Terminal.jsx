@@ -9,26 +9,27 @@ Type 'help' for available commands.
 `;
 
 const COMMAND_DESCRIPTIONS = {
-  "help": "Show all available commands",
-  "clear": "Clear the terminal output",
+  help: "Show all available commands",
+  clear: "Clear the terminal output",
   "show projects": "Open Projects window",
   "show about": "Open About window",
-  "settings": "Open Settings window",
-  "ls": "List files and directories",
-  "cat": "Display file content (usage: cat [file])",
+  settings: "Open Settings window",
+  ls: "List files and directories",
+  cat: "Display file content (usage: cat [file])",
   "open resume": "Open resume window",
-  "contact": "Open contact window",
-  "github": "View GitHub activity",
-  "quest": "Start a new quest",
-  "challenge": "Start a random challenge",
-  "score": "Display your current XP",
-  "achievements": "Show unlocked achievements",
-  "profile": "Open profile & stats",
-  "tour": "Start a guided tour",
-  "assistant": "Open Dev Assistant window",
-  "playground": "Open code playground",
-  "admin": "Open admin & analytics (needs sudo mode)",
-  "sudo mode": "Toggle admin mode"
+  contact: "Open contact window",
+  github: "View GitHub activity",
+  quest: "Start a new quest",
+  challenge: "Start a random challenge",
+  score: "Display your current XP",
+  achievements: "Show unlocked achievements",
+  profile: "Open profile & stats",
+  tour: "Start a guided tour",
+  assistant: "Open Dev Assistant window",
+  playground: "Open code playground",
+  admin: "Open admin & analytics (needs sudo mode)",
+  "sudo mode": "Toggle admin mode",
+  recruiter: "Toggle recruiter mode (CV-focused)"
 };
 
 const COMMANDS = Object.keys(COMMAND_DESCRIPTIONS);
@@ -51,7 +52,17 @@ const Terminal = ({ openWindow, showToast }) => {
     startChallenge,
     handleChallengeCommand,
     score,
-    achievements
+    achievements,
+    incrementCommandUsage,
+    toggleAdminMode,
+    toggleRecruiterMode,
+    commandUsage,
+    windowOpenCount,
+    projectViewCount,
+    visitorProfile,
+    level,
+    nextLevelXP,
+    skillXP
   } = useGameState();
 
   useEffect(() => {
@@ -63,7 +74,7 @@ const Terminal = ({ openWindow, showToast }) => {
       setOutput(prev => prev + welcomeText.charAt(index));
       index++;
       if (index < welcomeText.length) {
-        setTimeout(type, 30);
+        setTimeout(type, 25);
       } else {
         setOutput(prev => prev + "\n");
       }
@@ -107,22 +118,20 @@ const Terminal = ({ openWindow, showToast }) => {
     }
   };
 
-  const handleEnter = () => {
-    const cmd = input.trim();
-    if (!cmd) return;
+  const runCommand = cmd => {
     const lower = cmd.toLowerCase();
 
     appendOutput("> " + cmd);
     setHistory(prev => [...prev, cmd]);
     setHistoryIndex(history.length + 1);
 
-    // First: challenge completion
-    handleChallengeCommand(lower, appendOutput, showToast);
+    // Track usage
+    incrementCommandUsage && incrementCommandUsage(lower);
 
-    // Then: quest completion
+    // First: challenge & quest checks
+    handleChallengeCommand(lower, appendOutput, showToast);
     handleQuestCommand(lower, appendOutput, showToast);
 
-    // Now process the command
     processCommandInput({
       cmd,
       appendOutput,
@@ -133,10 +142,31 @@ const Terminal = ({ openWindow, showToast }) => {
         startQuest,
         startChallenge,
         score,
-        achievements
+        achievements,
+        incrementCommandUsage,
+        toggleAdminMode,
+        toggleRecruiterMode,
+        commandUsage,
+        windowOpenCount,
+        projectViewCount,
+        visitorProfile,
+        level,
+        nextLevelXP,
+        skillXP
       }
     });
+  };
 
+  const handleEnter = () => {
+    const cmd = input.trim();
+    if (!cmd) return;
+    if (showSuggestions && suggestions.length > 0) {
+      setInput(suggestions[highlightIndex]);
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    runCommand(cmd);
     setInput("");
     setSuggestions([]);
     setShowSuggestions(false);
@@ -145,13 +175,7 @@ const Terminal = ({ openWindow, showToast }) => {
   const handleKeyDown = e => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (showSuggestions && suggestions.length > 0) {
-        setInput(suggestions[highlightIndex]);
-        setSuggestions([]);
-        setShowSuggestions(false);
-      } else {
-        handleEnter();
-      }
+      handleEnter();
     } else if (e.key === "ArrowUp") {
       if (showSuggestions && suggestions.length > 0) {
         e.preventDefault();

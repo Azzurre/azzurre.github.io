@@ -1,14 +1,14 @@
 import React from "react";
 import { useDraggableResizable } from "../hooks/useDraggableResizable.js";
 
-const Window = ({ id, title, children, zIndex, onClose, onFocus }) => {
+const Window = ({ id, title, children, zIndex, onClose, onFocus, isActive }) => {
   const { ref, position, size, onMouseDownDrag, onMouseDownResize } =
     useDraggableResizable();
 
   return (
     <div
       ref={ref}
-      className="window default"
+      className={`window default${isActive ? " active" : ""}`}
       style={{
         top: position.y,
         left: position.x,
