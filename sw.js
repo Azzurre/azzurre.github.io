@@ -1,11 +1,23 @@
-self.addEventListener('install', event => {
-  console.log('Service Worker installing.');
+const CACHE_NAME = "devterminal-cache-v1";
+const ASSETS = [
+  "/",
+  "/index.html"
+];
+
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)));
 });
 
-self.addEventListener('activate', event => {
-  console.log('Service Worker activating.');
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
 });
 
-self.addEventListener('fetch', event => {
-  // Optional: Add caching logic for offline use
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(resp => resp || fetch(event.request))
+  );
 });
