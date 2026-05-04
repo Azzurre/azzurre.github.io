@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#101318" />
     <meta
       name="description"
-      content="Portfolio for Dimitrios Devliotis, a software developer and Artificial Intelligence MSc candidate building AI, web, security, and interactive software projects."
+      content="Portfolio for Dimitrios Devliotis, a software developer and Artificial Intelligence MSc candidate building games, AI systems, web applications, and interactive software."
     />
     <meta property="og:title" content="Dimitrios Devliotis | Software Developer" />
     <meta
@@ -59,9 +59,14 @@
           "Artificial Intelligence",
           "Python",
           "React",
+          "TypeScript",
           "JavaScript",
           "C#",
           "Unity",
+          "Game Development",
+          "Procedural Generation",
+          "Node.js",
+          "AWS",
           "Computer Vision",
           "Cybersecurity"
         ]
@@ -105,8 +110,8 @@
           <p class="eyebrow">Staines, UK / Royal Holloway AI MSc candidate</p>
           <h1>Dimitrios Devliotis</h1>
           <p class="hero-lede">
-            Software developer building practical AI systems, clean web products, security tooling,
-            and interactive experiences with a strong design mindset.
+            Software developer building practical AI systems, games, clean web products, security
+            tooling, and interactive experiences with a strong design mindset.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#case-studies">Read case studies</a>
@@ -125,7 +130,7 @@
             />
             <div>
               <p class="panel-label">Open to</p>
-              <h2>Software, AI, frontend, and graduate developer roles.</h2>
+              <h2>Software, AI, game development, frontend, and graduate developer roles.</h2>
             </div>
           </div>
           <div class="signal-grid" aria-label="Current profile highlights">
@@ -152,11 +157,11 @@
       <section class="section proof-strip" aria-label="Profile facts">
         <div>
           <span>Current focus</span>
-          <strong>Local RAG, computer vision, NLP, and portfolio-grade engineering.</strong>
+          <strong>RAG systems, game development, computer vision, and portfolio-grade engineering.</strong>
         </div>
         <div>
-          <span>Education</span>
-          <strong>Royal Holloway MSc Artificial Intelligence, BSc Computer Science.</strong>
+          <span>Game development</span>
+          <strong>Unity, C#, procedural generation, enemy AI behaviour, UI, and performance optimisation.</strong>
         </div>
         <div>
           <span>Strengths</span>
@@ -170,7 +175,8 @@
           <h2>Projects with clear technical signals for employers.</h2>
           <p>
             A curated view of recent GitHub work, academic projects, and practical tools. Live
-            repository dates are hydrated from GitHub when available.
+            repository dates are hydrated from GitHub when available, with game-development and AI
+            work brought forward for employers.
           </p>
         </div>
         <div class="project-grid" id="project-grid" aria-live="polite"></div>
@@ -190,27 +196,27 @@
           <article class="case-card feature-case reveal">
             <div class="case-header">
               <span>Applied AI</span>
-              <h3>Local RAG Assistant</h3>
+              <h3>RAG-Based FightIQ System</h3>
               <p>
-                A Python retrieval augmented generation workflow for asking grounded questions
-                over local documents using semantic search and a local LLM.
+                A Python retrieval augmented generation workflow integrating web search, document
+                ingestion, and LLM-based response generation for domain-specific questions.
               </p>
             </div>
             <div class="case-body">
               <div>
                 <h4>Problem</h4>
                 <p>
-                  Local notes and documents become hard to search once they grow. The goal was to
-                  build a private assistant that retrieves relevant context before generating an
-                  answer, instead of relying on memory or ungrounded model output.
+                  Domain-specific questions need current, relevant context. The goal was to reduce
+                  ungrounded answers by retrieving useful source material before generating a
+                  response.
                 </p>
               </div>
               <div>
                 <h4>Approach</h4>
                 <ul class="case-points">
-                  <li>Built an ingestion flow that loads documents, splits them into overlapping chunks, and stores embeddings in ChromaDB.</li>
-                  <li>Used SentenceTransformers for semantic search and Ollama for local answer generation.</li>
-                  <li>Separated ingest and ask steps so the retrieval pipeline is easier to debug and extend.</li>
+                  <li>Combined document ingestion, web scraping, text extraction, and structured storage for dynamic knowledge retrieval.</li>
+                  <li>Designed the response flow around retrieval and prompt engineering to improve answer grounding.</li>
+                  <li>Used the project to deepen understanding of end-to-end AI systems and hallucination mitigation.</li>
                 </ul>
               </div>
               <div>
@@ -223,14 +229,58 @@
             </div>
             <div class="case-footer">
               <span>Python</span>
-              <span>ChromaDB</span>
-              <span>SentenceTransformers</span>
-              <span>Ollama</span>
+              <span>NLP</span>
+              <span>RAG</span>
+              <span>Web scraping</span>
+              <span>LLM integration</span>
               <a href="https://github.com/Azzurre/Rag" target="_blank" rel="noreferrer">View repository</a>
             </div>
           </article>
 
           <article class="case-card reveal delay-1">
+            <div class="case-header">
+              <span>Game development</span>
+              <h3>Asteroid Miner</h3>
+              <p>
+                A Unity/C# 3D shooter built around procedural chunk generation, real-time enemy AI
+                behaviour, object pooling, spawning systems, and responsive UI.
+              </p>
+            </div>
+            <div class="case-body">
+              <div>
+                <h4>Problem</h4>
+                <p>
+                  Real-time games need systems that feel responsive while staying efficient. The
+                  project focused on building a playable loop while managing generation, enemies,
+                  UI, and performance constraints.
+                </p>
+              </div>
+              <div>
+                <h4>Approach</h4>
+                <ul class="case-points">
+                  <li>Built procedural chunks to create a dynamic play space rather than a fixed map.</li>
+                  <li>Implemented enemy spawning and AI behaviour to create pressure and combat flow.</li>
+                  <li>Used object pooling and structured gameplay systems to improve runtime performance.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Employer signal</h4>
+                <p>
+                  Shows Unity/C#, gameplay architecture, systems thinking, optimisation, and the
+                  practical skills needed for junior game-development roles.
+                </p>
+              </div>
+            </div>
+            <div class="case-footer">
+              <span>Unity</span>
+              <span>C#</span>
+              <span>Game AI</span>
+              <span>Procedural generation</span>
+              <span>Object pooling</span>
+            </div>
+          </article>
+
+          <article class="case-card reveal delay-2">
             <div class="case-header">
               <span>Computer vision</span>
               <h3>LiftLens</h3>
@@ -271,7 +321,7 @@
             </div>
           </article>
 
-          <article class="case-card reveal delay-2">
+          <article class="case-card reveal delay-3">
             <div class="case-header">
               <span>Machine learning</span>
               <h3>World Cup Predictor</h3>
@@ -331,29 +381,30 @@
           <h2>Engineering range with an AI direction.</h2>
           <p>
             The stack reflects both academic foundations and self-directed builds: from Python ML
-            tooling to React interfaces, C# gameplay systems, and security-focused utilities.
+            tooling to React interfaces, C# gameplay systems, backend services, databases, and
+            cloud-aware development.
           </p>
         </div>
         <div class="skill-grid">
           <article class="skill-card reveal">
             <span>Languages</span>
-            <h3>Python, JavaScript, C#, C++, Java</h3>
+            <h3>Python, C#, JavaScript, TypeScript, C++, Java</h3>
             <p>Comfortable moving between scripting, frontend, object-oriented systems, and application logic.</p>
           </article>
           <article class="skill-card reveal delay-1">
-            <span>AI and data</span>
-            <h3>scikit-learn, NLP, RAG, computer vision</h3>
-            <p>Built ML predictors, sentiment analysis, local RAG workflows, and pose-tracking prototypes.</p>
+            <span>Game development</span>
+            <h3>Unity, C#, AI behaviour, procedural systems</h3>
+            <p>Interested in game development roles and experienced with mechanics, enemy systems, UI, optimisation, and real-time architecture.</p>
           </article>
           <article class="skill-card reveal delay-2">
             <span>Web and product</span>
-            <h3>React, Vite, APIs, responsive UI</h3>
+            <h3>React, Angular, Next.js, APIs, responsive UI</h3>
             <p>Focused on clear flows, fast pages, recruiter-friendly storytelling, and accessible interfaces.</p>
           </article>
           <article class="skill-card reveal delay-3">
-            <span>Systems</span>
-            <h3>Unity, networking, algorithms, security</h3>
-            <p>Experience with game mechanics, procedural generation, socket tooling, and security modules.</p>
+            <span>Back-end and systems</span>
+            <h3>Node.js, Express, .NET, SQL, MongoDB, AWS</h3>
+            <p>Developing stronger full-stack foundations across APIs, databases, networking, systems architecture, and cloud deployment concepts.</p>
           </article>
         </div>
       </section>
@@ -379,7 +430,14 @@
             </div>
           </article>
           <article class="timeline-item reveal delay-2">
-            <time>2020 - 2025</time>
+            <time>2025 - 2026</time>
+            <div>
+              <h3>Computer Science Society member</h3>
+              <p>Royal Holloway. Engaged in technical discussion, peer learning, AI/software topics, and collaborative sessions.</p>
+            </div>
+          </article>
+          <article class="timeline-item reveal delay-3">
+            <time>2019 - 2026</time>
             <div>
               <h3>Benugo, Egham</h3>
               <p>Built strong communication, multitasking, ownership, and pressure-handling skills in a fast-paced service environment.</p>
@@ -400,8 +458,9 @@
           <p class="eyebrow">CV</p>
           <h2>Current CV and full background.</h2>
           <p>
-            The CV includes education, selected projects, work experience, technical skills,
-            language fluency in English and Greek, and additional eligibility details.
+            The CV includes education, selected projects, game-development experience,
+            full-stack skills, work experience, language fluency in English and Greek, and
+            additional eligibility details.
           </p>
         </div>
         <a class="button primary reveal delay-1" href="/assets/resume.pdf" target="_blank" rel="noreferrer">Open resume PDF</a>
@@ -413,7 +472,7 @@
           <h2>Ready for software, AI, and graduate developer opportunities.</h2>
           <p>
             I am especially interested in roles where I can combine problem solving, practical
-            engineering, and user-focused product thinking.
+            engineering, game-development thinking, AI systems, and user-focused product work.
           </p>
         </div>
         <div class="contact-grid">
@@ -435,7 +494,7 @@
 
     <footer class="site-footer">
       <span>Dimitrios Devliotis</span>
-      <span>Built for GitHub Pages with live GitHub data and a dark mode preference.</span>
+      <span>Built for GitHub Pages with live GitHub data, case studies, and a dark mode preference.</span>
     </footer>
 
     <script src="/assets/site.js" defer></script>

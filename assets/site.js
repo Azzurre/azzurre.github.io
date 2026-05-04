@@ -3,13 +3,22 @@ const githubUsername = "Azzurre";
 const featuredProjects = [
   {
     repo: "Rag",
-    title: "Local RAG Assistant",
+    title: "RAG-Based FightIQ System",
     kicker: "AI / retrieval",
     summary:
-      "A local retrieval augmented generation project that chunks documents, stores embeddings in ChromaDB, and uses Ollama to answer questions with grounded context.",
-    impact: "Shows applied AI workflow design, document retrieval, and practical Python architecture.",
-    tech: ["Python", "ChromaDB", "SentenceTransformers", "Ollama"],
+      "A retrieval augmented generation system integrating web search, document ingestion, and LLM response generation for domain-specific queries.",
+    impact: "Shows applied AI workflow design, information retrieval, prompt engineering, and hallucination mitigation.",
+    tech: ["Python", "NLP", "RAG", "Web scraping"],
     featured: true
+  },
+  {
+    repo: "TopDown",
+    title: "Asteroid Miner / Shooter Systems",
+    kicker: "Game development",
+    summary:
+      "Unity and C# work focused on procedural generation, real-time enemy AI behaviour, object pooling, spawning systems, responsive UI, and performance constraints.",
+    impact: "Shows the gameplay systems, optimisation mindset, and engine skills needed for game-development roles.",
+    tech: ["Unity", "C#", "Game AI", "Procedural generation"]
   },
   {
     repo: "LiftLens",
@@ -55,15 +64,6 @@ const featuredProjects = [
       "A React weather application with geolocation defaults, manual city search, weather API integration, and responsive rendering.",
     impact: "A clean example of API integration, stateful UI, and user-friendly web interaction.",
     tech: ["React", "JavaScript", "Vite", "Weather API"]
-  },
-  {
-    repo: "TopDown",
-    title: "Top-Down Shooter Prototype",
-    kicker: "Game systems",
-    summary:
-      "A prototype shooter focused on enemy behaviour, movement logic, combat flow, and iterative game-feel improvements.",
-    impact: "Highlights gameplay loops, systems thinking, and interactive software design.",
-    tech: ["Unity", "C#", "Game AI", "Gameplay"]
   }
 ];
 
