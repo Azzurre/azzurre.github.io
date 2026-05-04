@@ -224,6 +224,7 @@ textarea {
 .nav-button:hover,
 .contact-card:hover,
 .project-card:hover,
+.case-card:hover,
 .repo-card:hover,
 .skill-card:hover,
 .timeline-item:hover {
@@ -234,6 +235,7 @@ textarea {
 .nav-button,
 .contact-card,
 .project-card,
+.case-card,
 .repo-card,
 .skill-card,
 .timeline-item {
@@ -275,6 +277,10 @@ textarea {
   width: min(var(--max), calc(100% - 2rem));
   margin: 0 auto;
   padding: 6rem 0;
+}
+
+.section[id] {
+  scroll-margin-top: 6.5rem;
 }
 
 .hero-section {
@@ -463,6 +469,7 @@ h1 {
 }
 
 .project-grid,
+.case-grid,
 .repo-grid,
 .skill-grid,
 .contact-grid {
@@ -569,6 +576,113 @@ h1 {
 
 .project-actions a:hover,
 .repo-actions a:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.case-study-section .section-heading {
+  position: static;
+  max-width: 52rem;
+}
+
+.case-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.case-card {
+  display: flex;
+  min-height: 31rem;
+  flex-direction: column;
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 84%, transparent);
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+}
+
+.case-card.feature-case {
+  grid-column: span 2;
+  min-height: 28rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent),
+    color-mix(in srgb, var(--surface-solid) 88%, transparent);
+}
+
+.case-header span,
+.case-footer span {
+  color: var(--accent-3);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.case-header h3 {
+  margin: 0 0 0.8rem;
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.case-header p,
+.case-body p,
+.case-points {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.case-body {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feature-case .case-body {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.case-body h4 {
+  margin: 0 0 0.45rem;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.case-points {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.case-points li + li {
+  margin-top: 0.55rem;
+}
+
+.case-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.case-footer span,
+.case-footer a {
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 0.6rem;
+  background: color-mix(in srgb, var(--surface-solid) 76%, transparent);
+  text-decoration: none;
+}
+
+.case-footer a {
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.case-footer a:hover {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
@@ -739,7 +853,16 @@ h1 {
 
   .repo-grid,
   .contact-grid,
+  .case-grid,
   .proof-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .case-card.feature-case {
+    grid-column: auto;
+  }
+
+  .feature-case .case-body {
     grid-template-columns: 1fr;
   }
 
@@ -792,6 +915,7 @@ h1 {
 
   .portrait-row,
   .project-grid,
+  .case-grid,
   .skill-grid,
   .timeline-item {
     grid-template-columns: 1fr;

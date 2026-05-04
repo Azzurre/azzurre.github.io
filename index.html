@@ -82,6 +82,7 @@
 
         <div class="nav-links">
           <a href="#work">Work</a>
+          <a href="#case-studies">Case Studies</a>
           <a href="#skills">Skills</a>
           <a href="#timeline">Story</a>
           <a href="#cv">CV</a>
@@ -108,8 +109,8 @@
             and interactive experiences with a strong design mindset.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#work">See selected work</a>
-            <a class="button secondary" href="/assets/resume.pdf" target="_blank" rel="noreferrer">Open CV</a>
+            <a class="button primary" href="#case-studies">Read case studies</a>
+            <a class="button secondary" href="#work">See projects</a>
           </div>
         </div>
 
@@ -173,6 +174,145 @@
           </p>
         </div>
         <div class="project-grid" id="project-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="section case-study-section" id="case-studies">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Case studies</p>
+          <h2>How I approach problems, not just what I built.</h2>
+          <p>
+            These are the strongest employer signals on the portfolio: applied AI, computer vision,
+            simulation, testing, and clear technical decision-making.
+          </p>
+        </div>
+
+        <div class="case-grid">
+          <article class="case-card feature-case reveal">
+            <div class="case-header">
+              <span>Applied AI</span>
+              <h3>Local RAG Assistant</h3>
+              <p>
+                A Python retrieval augmented generation workflow for asking grounded questions
+                over local documents using semantic search and a local LLM.
+              </p>
+            </div>
+            <div class="case-body">
+              <div>
+                <h4>Problem</h4>
+                <p>
+                  Local notes and documents become hard to search once they grow. The goal was to
+                  build a private assistant that retrieves relevant context before generating an
+                  answer, instead of relying on memory or ungrounded model output.
+                </p>
+              </div>
+              <div>
+                <h4>Approach</h4>
+                <ul class="case-points">
+                  <li>Built an ingestion flow that loads documents, splits them into overlapping chunks, and stores embeddings in ChromaDB.</li>
+                  <li>Used SentenceTransformers for semantic search and Ollama for local answer generation.</li>
+                  <li>Separated ingest and ask steps so the retrieval pipeline is easier to debug and extend.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Employer signal</h4>
+                <p>
+                  Shows practical AI engineering: data preparation, retrieval design, model
+                  integration, local-first thinking, and readable project structure.
+                </p>
+              </div>
+            </div>
+            <div class="case-footer">
+              <span>Python</span>
+              <span>ChromaDB</span>
+              <span>SentenceTransformers</span>
+              <span>Ollama</span>
+              <a href="https://github.com/Azzurre/Rag" target="_blank" rel="noreferrer">View repository</a>
+            </div>
+          </article>
+
+          <article class="case-card reveal delay-1">
+            <div class="case-header">
+              <span>Computer vision</span>
+              <h3>LiftLens</h3>
+              <p>
+                A fitness form analysis prototype that uses pose landmarks and geometry to inspect
+                movement from video.
+              </p>
+            </div>
+            <div class="case-body">
+              <div>
+                <h4>Problem</h4>
+                <p>
+                  Exercise feedback is useful only when it is easy to capture. LiftLens explores how
+                  ordinary video can become structured movement feedback without specialist hardware.
+                </p>
+              </div>
+              <div>
+                <h4>Approach</h4>
+                <ul class="case-points">
+                  <li>Used MediaPipe pose landmarks and OpenCV frame processing to detect body positions.</li>
+                  <li>Calculated joint angles with vector geometry to reason about movement quality.</li>
+                  <li>Kept the prototype focused on a squat sample so the core tracking loop could be validated first.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Employer signal</h4>
+                <p>
+                  Demonstrates computer vision, mathematical reasoning, prototyping discipline, and
+                  the ability to turn AI output into user-facing feedback.
+                </p>
+              </div>
+            </div>
+            <div class="case-footer">
+              <span>Python</span>
+              <span>MediaPipe</span>
+              <span>OpenCV</span>
+              <a href="https://github.com/Azzurre/LiftLens" target="_blank" rel="noreferrer">View repository</a>
+            </div>
+          </article>
+
+          <article class="case-card reveal delay-2">
+            <div class="case-header">
+              <span>Machine learning</span>
+              <h3>World Cup Predictor</h3>
+              <p>
+                A Python tournament simulator that estimates 2026 World Cup win probabilities
+                through generated match data, ML classification, and Monte Carlo runs.
+              </p>
+            </div>
+            <div class="case-body">
+              <div>
+                <h4>Problem</h4>
+                <p>
+                  Tournament outcomes are uncertain and depend on both team strength and bracket
+                  paths. The project needed a repeatable way to simulate that uncertainty.
+                </p>
+              </div>
+              <div>
+                <h4>Approach</h4>
+                <ul class="case-points">
+                  <li>Generated synthetic match data with a Poisson goal model calibrated around international football assumptions.</li>
+                  <li>Trained a logistic regression model using ELO-based features and knockout context.</li>
+                  <li>Ran full tournament simulations many times and backed the code with pytest unit tests.</li>
+                </ul>
+              </div>
+              <div>
+                <h4>Employer signal</h4>
+                <p>
+                  Shows modelling judgment, simulation thinking, CLI structure, testing habits, and
+                  clear explanation of probabilistic results.
+                </p>
+              </div>
+            </div>
+            <div class="case-footer">
+              <span>Python</span>
+              <span>scikit-learn</span>
+              <span>Monte Carlo</span>
+              <span>pytest</span>
+              <a href="https://github.com/Azzurre/World-Cup-Predictor" target="_blank" rel="noreferrer">View repository</a>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="section github-section">
