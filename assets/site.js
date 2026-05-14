@@ -83,6 +83,196 @@ const fallbackRepos = featuredProjects.map((project, index) => ({
 let allRepos = [];
 let activeRepoFilter = "Featured";
 
+function readRgb(value, fallback = [122, 167, 255]) {
+  const color = value.trim();
+  const hex = color.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+
+  if (hex) {
+    const raw = hex[1].length === 3 ? hex[1].split("").map((char) => char + char).join("") : hex[1];
+    return [0, 2, 4].map((index) => parseInt(raw.slice(index, index + 2), 16));
+  }
+
+  const rgb = color.match(/rgba?\(([^)]+)\)/i);
+  if (rgb) {
+    const channels = rgb[1]
+      .split(/[\s,\/]+/)
+      .map((part) => Number.parseFloat(part))
+      .filter((part) => Number.isFinite(part));
+
+    if (channels.length >= 3) return channels.slice(0, 3);
+  }
+
+  return fallback;
+}
+
+function rgba(rgb, alpha) {
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+}
+
+function getAmbientColors() {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    line: readRgb(styles.getPropertyValue("--line"), [168, 179, 196]),
+    accent: readRgb(styles.getPropertyValue("--accent"), [122, 167, 255]),
+    accent2: readRgb(styles.getPropertyValue("--accent-2"), [74, 222, 128]),
+    accent3: readRgb(styles.getPropertyValue("--accent-3"), [251, 146, 60]),
+    accent4: readRgb(styles.getPropertyValue("--accent-4"), [240, 171, 252])
+  };
+}
+
+function setupAmbientBackground() {
+  const canvas = document.getElementById("ambient-canvas");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!canvas || reduceMotion.matches) return;
+
+  const context = canvas.getContext("2d", { alpha: true });
+  if (!context || !window.requestAnimationFrame) return;
+
+  const pointer = {
+    x: window.innerWidth * 0.66,
+    y: window.innerHeight * 0.36,
+    targetX: window.innerWidth * 0.66,
+    targetY: window.innerHeight * 0.36,
+    active: false,
+    pulse: 0
+  };
+
+  const state = {
+    width: 0,
+    height: 0,
+    dpr: 1,
+    colors: getAmbientColors(),
+    raf: 0
+  };
+
+  function resizeCanvas() {
+    state.width = window.innerWidth;
+    state.height = window.innerHeight;
+    state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(state.width * state.dpr);
+    canvas.height = Math.floor(state.height * state.dpr);
+    context.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  function movePointer(event) {
+    pointer.targetX = event.clientX;
+    pointer.targetY = event.clientY;
+    pointer.active = true;
+  }
+
+  function drawDiagonalBands(time) {
+    const scroll = window.scrollY || 0;
+    context.lineWidth = 1;
+
+    for (let index = 0; index < 8; index += 1) {
+      const y = ((index * 170 + time * 0.028 + scroll * 0.09) % (state.height + 260)) - 140;
+      const color = index % 2 === 0 ? state.colors.accent : state.colors.accent2;
+
+      context.strokeStyle = rgba(color, 0.045);
+      context.beginPath();
+      context.moveTo(-120, y);
+      context.lineTo(state.width + 120, y - state.width * 0.16);
+      context.stroke();
+    }
+  }
+
+  function drawInteractiveGrid(time) {
+    const spacing = state.width < 680 ? 60 : 52;
+    const radius = state.width < 680 ? 150 : 260;
+    const offsetY = -((window.scrollY || 0) * 0.08) % spacing;
+
+    context.lineCap = "square";
+
+    for (let y = offsetY - spacing; y < state.height + spacing; y += spacing) {
+      for (let x = -spacing; x < state.width + spacing; x += spacing) {
+        const dx = pointer.x - x;
+        const dy = pointer.y - y;
+        const distance = Math.hypot(dx, dy);
+        const influence = pointer.active ? Math.max(0, 1 - distance / radius) : 0;
+        const pull = influence * 0.08;
+        const px = x + dx * pull;
+        const py = y + dy * pull;
+        const shimmer = Math.sin((x + y) * 0.018 + time * 0.0012) * 1.5;
+        const length = 4 + shimmer + influence * 9;
+        const color = (x + y) % (spacing * 3) === 0 ? state.colors.accent2 : state.colors.line;
+
+        context.lineWidth = influence > 0.55 ? 1.35 : 1;
+        context.strokeStyle = rgba(color, 0.15 + influence * 0.38);
+        context.beginPath();
+        context.moveTo(px - length, py);
+        context.lineTo(px + length, py);
+        context.moveTo(px, py - length);
+        context.lineTo(px, py + length);
+        context.stroke();
+
+        if (influence > 0.44 && (x / spacing + y / spacing) % 2 === 0) {
+          context.strokeStyle = rgba(state.colors.accent, (influence - 0.44) * 0.24);
+          context.lineWidth = 1;
+          context.beginPath();
+          context.moveTo(px, py);
+          context.lineTo(pointer.x, pointer.y);
+          context.stroke();
+        }
+      }
+    }
+  }
+
+  function drawPulse() {
+    if (pointer.pulse <= 0.01) return;
+
+    const size = 44 + (1 - pointer.pulse) * 130;
+    context.lineWidth = 1.4;
+    context.strokeStyle = rgba(state.colors.accent4, pointer.pulse * 0.42);
+    context.strokeRect(pointer.x - size / 2, pointer.y - size / 2, size, size);
+    pointer.pulse *= 0.92;
+  }
+
+  function draw(time = 0) {
+    context.clearRect(0, 0, state.width, state.height);
+    pointer.x += (pointer.targetX - pointer.x) * 0.09;
+    pointer.y += (pointer.targetY - pointer.y) * 0.09;
+
+    drawDiagonalBands(time);
+    drawInteractiveGrid(time);
+    drawPulse();
+
+    state.raf = window.requestAnimationFrame(draw);
+  }
+
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas, { passive: true });
+  window.addEventListener("pointermove", movePointer, { passive: true });
+  window.addEventListener(
+    "pointerdown",
+    (event) => {
+      movePointer(event);
+      pointer.pulse = 1;
+    },
+    { passive: true }
+  );
+  window.addEventListener("pointerleave", () => {
+    pointer.active = false;
+  });
+  window.addEventListener("blur", () => {
+    pointer.active = false;
+  });
+
+  new MutationObserver(() => {
+    state.colors = getAmbientColors();
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      window.cancelAnimationFrame(state.raf);
+    } else {
+      resizeCanvas();
+      state.raf = window.requestAnimationFrame(draw);
+    }
+  });
+
+  state.raf = window.requestAnimationFrame(draw);
+}
+
 function formatDate(dateString) {
   if (!dateString) return "Recently";
   return new Intl.DateTimeFormat("en-GB", {
@@ -291,5 +481,6 @@ function removeOldServiceWorkers() {
 }
 
 setupThemeToggle();
+setupAmbientBackground();
 removeOldServiceWorkers();
 loadGithubRepos();

@@ -44,6 +44,7 @@ html {
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
@@ -59,12 +60,27 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 44px 44px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 70%);
+}
+
+.ambient-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.78;
+}
+
+:root[data-theme="dark"] .ambient-canvas {
+  opacity: 0.92;
 }
 
 a {
@@ -104,6 +120,12 @@ textarea {
   top: 0;
   z-index: 50;
   padding: 0.75rem;
+}
+
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
 }
 
 .nav-shell {
