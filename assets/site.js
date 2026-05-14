@@ -273,6 +273,59 @@ function setupAmbientBackground() {
   state.raf = window.requestAnimationFrame(draw);
 }
 
+function setupInteractiveHighlights() {
+  const selector = [
+    ".nav-links a",
+    ".nav-button",
+    ".button",
+    ".theme-toggle",
+    ".repo-filter",
+    ".project-actions a",
+    ".repo-actions a",
+    ".case-footer a",
+    ".contact-card"
+  ].join(",");
+
+  function updatePosition(element, event) {
+    const rect = element.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    element.style.setProperty("--highlight-x", `${Math.max(0, Math.min(100, x))}%`);
+    element.style.setProperty("--highlight-y", `${Math.max(0, Math.min(100, y))}%`);
+  }
+
+  function bindElement(element) {
+    if (element.dataset.highlightBound === "true") return;
+    element.dataset.highlightBound = "true";
+
+    element.addEventListener("pointermove", (event) => updatePosition(element, event), { passive: true });
+    element.addEventListener(
+      "pointerdown",
+      (event) => {
+        updatePosition(element, event);
+        element.classList.add("is-pressing");
+        window.setTimeout(() => element.classList.remove("is-pressing"), 180);
+      },
+      { passive: true }
+    );
+    element.addEventListener("pointerleave", () => {
+      element.classList.remove("is-pressing");
+    });
+  }
+
+  function bindInteractiveElements() {
+    document.querySelectorAll(selector).forEach(bindElement);
+  }
+
+  bindInteractiveElements();
+
+  new MutationObserver(bindInteractiveElements).observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+}
+
 function formatDate(dateString) {
   if (!dateString) return "Recently";
   return new Intl.DateTimeFormat("en-GB", {
@@ -482,5 +535,6 @@ function removeOldServiceWorkers() {
 
 setupThemeToggle();
 setupAmbientBackground();
+setupInteractiveHighlights();
 removeOldServiceWorkers();
 loadGithubRepos();
