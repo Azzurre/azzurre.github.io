@@ -33,7 +33,7 @@
         document.documentElement.dataset.theme = theme;
       })();
     </script>
-    <link rel="stylesheet" href="/assets/site.css?v=20260515-scroll-reveal" />
+    <link rel="stylesheet" href="/assets/site.css?v=20260515-alive-polish" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -75,6 +75,7 @@
   </head>
   <body>
     <canvas class="ambient-canvas" id="ambient-canvas" aria-hidden="true"></canvas>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
     <a class="skip-link" href="#work">Skip to work</a>
     <header class="site-header">
       <nav class="nav-shell" aria-label="Main navigation">
@@ -135,9 +136,13 @@
               <h2>Software, AI, game development, frontend, and graduate developer roles.</h2>
             </div>
           </div>
+          <div class="live-signal" aria-label="Current focus: AI systems, game development, and polished web products">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="live-signal-text">Building polished AI, game, and web systems.</span>
+          </div>
           <div class="signal-grid" aria-label="Current profile highlights">
             <div>
-              <span id="repo-count">9</span>
+              <span id="repo-count" data-count-to="9">9</span>
               <small>active repos</small>
             </div>
             <div>
@@ -149,7 +154,7 @@
               <small>BSc Computer Science</small>
             </div>
             <div>
-              <span>2</span>
+              <span data-count-to="2">2</span>
               <small>fluent languages</small>
             </div>
           </div>
@@ -168,6 +173,35 @@
         <div>
           <span>Strengths</span>
           <strong>Problem solving, ownership, creative UI thinking, and resilient teamwork.</strong>
+        </div>
+      </section>
+
+      <section class="section stack-marquee" aria-label="Technical stack">
+        <div class="stack-track">
+          <div class="stack-set">
+            <span>Python</span>
+            <span>Unity</span>
+            <span>C#</span>
+            <span>React</span>
+            <span>TypeScript</span>
+            <span>RAG</span>
+            <span>OpenCV</span>
+            <span>Node.js</span>
+            <span>SQL</span>
+            <span>AWS</span>
+          </div>
+          <div class="stack-set" aria-hidden="true">
+            <span>Python</span>
+            <span>Unity</span>
+            <span>C#</span>
+            <span>React</span>
+            <span>TypeScript</span>
+            <span>RAG</span>
+            <span>OpenCV</span>
+            <span>Node.js</span>
+            <span>SQL</span>
+            <span>AWS</span>
+          </div>
         </div>
       </section>
 
@@ -597,6 +631,6 @@
       <span>Software Developer | AI | Games | Web</span>
     </footer>
 
-    <script src="/assets/site.js?v=20260515-scroll-reveal" defer></script>
+    <script src="/assets/site.js?v=20260515-alive-polish" defer></script>
   </body>
 </html>

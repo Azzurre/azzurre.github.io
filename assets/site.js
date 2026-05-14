@@ -377,6 +377,30 @@ function setupActiveNavigation() {
   syncFromHash();
 }
 
+function setupScrollProgress() {
+  const bar = document.getElementById("scroll-progress-bar");
+  if (!bar) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+    bar.style.transform = `scaleX(${progress})`;
+    ticking = false;
+  }
+
+  function requestProgressUpdate() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(updateProgress);
+  }
+
+  updateProgress();
+  window.addEventListener("scroll", requestProgressUpdate, { passive: true });
+  window.addEventListener("resize", requestProgressUpdate, { passive: true });
+}
+
 function setupScrollReveals() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -433,6 +457,65 @@ function setupScrollReveals() {
 
   window.addEventListener("hashchange", () => window.setTimeout(revealVisibleElements, 220));
   window.addEventListener("scroll", () => window.requestAnimationFrame(revealVisibleElements), { passive: true });
+}
+
+function animateNumber(element, endValue) {
+  const end = Number(endValue);
+  const start = Number(element.textContent.replace(/[^\d.-]/g, "")) || 0;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!Number.isFinite(end) || reduceMotion || start === end) {
+    element.textContent = String(endValue);
+    return;
+  }
+
+  const duration = 850;
+  const startedAt = performance.now();
+
+  function tick(now) {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = 1 - (1 - progress) ** 3;
+    element.textContent = String(Math.round(start + (end - start) * eased));
+
+    if (progress < 1) {
+      window.requestAnimationFrame(tick);
+    } else {
+      element.textContent = String(end);
+    }
+  }
+
+  window.requestAnimationFrame(tick);
+}
+
+function setupHeroCounters() {
+  document.querySelectorAll("[data-count-to]").forEach((element) => {
+    animateNumber(element, element.dataset.countTo);
+  });
+}
+
+function setupLiveSignal() {
+  const text = document.getElementById("live-signal-text");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!text || reduceMotion) return;
+
+  const messages = [
+    "Building polished AI, game, and web systems.",
+    "Exploring gameplay systems and AI-assisted tools.",
+    "Turning technical projects into clear product experiences.",
+    "Improving portfolio craft, performance, and interaction."
+  ];
+
+  let index = 0;
+
+  window.setInterval(() => {
+    index = (index + 1) % messages.length;
+    text.classList.add("is-changing");
+
+    window.setTimeout(() => {
+      text.textContent = messages[index];
+      text.classList.remove("is-changing");
+    }, 220);
+  }, 3600);
 }
 
 function formatDate(dateString) {
@@ -569,7 +652,12 @@ function updateGithubStatus(source) {
 
   const sourceText = source === "live" ? "GitHub data loaded" : "Showing curated fallback data";
   status.textContent = `${sourceText}. Latest update: ${formatDate(newest)}.`;
-  document.getElementById("repo-count").textContent = String(allRepos.length || 12);
+  const repoCount = document.getElementById("repo-count");
+  const count = allRepos.length || 12;
+  if (repoCount) {
+    repoCount.dataset.countTo = String(count);
+    animateNumber(repoCount, count);
+  }
 }
 
 function restoreHashScroll() {
@@ -646,6 +734,9 @@ setupThemeToggle();
 setupAmbientBackground();
 setupInteractiveHighlights();
 setupActiveNavigation();
+setupScrollProgress();
 setupScrollReveals();
+setupHeroCounters();
+setupLiveSignal();
 removeOldServiceWorkers();
 loadGithubRepos();

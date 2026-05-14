@@ -74,6 +74,27 @@ body::before {
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 70%);
 }
 
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+}
+
+.scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 46%, transparent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 120ms linear;
+}
+
 .ambient-canvas {
   position: fixed;
   inset: 0;
@@ -606,6 +627,41 @@ h1 {
   letter-spacing: 0;
 }
 
+.live-signal {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.75rem;
+  margin-top: 1.25rem;
+  padding: 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 72%, transparent);
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.live-dot {
+  width: 0.62rem;
+  height: 0.62rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-2) 42%, transparent);
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+
+#live-signal-text {
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+#live-signal-text.is-changing {
+  opacity: 0;
+  transform: translateY(0.35rem);
+}
+
 .signal-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -666,6 +722,46 @@ h1 {
 .proof-strip strong {
   font-size: 1rem;
   line-height: 1.45;
+}
+
+.stack-marquee {
+  padding: 1.25rem 0 0;
+  overflow: hidden;
+}
+
+.stack-track {
+  display: flex;
+  width: max-content;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--accent) 5%, transparent);
+  backdrop-filter: blur(18px);
+  animation: stackScroll 34s linear infinite;
+}
+
+.stack-marquee:hover .stack-track {
+  animation-play-state: paused;
+}
+
+.stack-set {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.55rem;
+}
+
+.stack-set span {
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+  background: color-mix(in srgb, var(--surface-solid) 74%, transparent);
 }
 
 .section-grid {
@@ -1248,6 +1344,25 @@ h1 {
   --reveal-delay: 230ms;
 }
 
+@keyframes livePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-2) 42%, transparent);
+    transform: scale(0.92);
+  }
+
+  50% {
+    box-shadow: 0 0 0 0.45rem transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes stackScroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1256,6 +1371,10 @@ h1 {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
+  }
+
+  .stack-track {
+    animation: none;
   }
 }
 
