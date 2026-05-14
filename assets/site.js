@@ -282,19 +282,7 @@ function setupInteractiveHighlights() {
     ".repo-filter",
     ".project-actions a",
     ".repo-actions a",
-    ".case-footer a",
-    ".contact-card",
-    ".project-card",
-    ".case-card",
-    ".repo-card",
-    ".role-card",
-    ".workflow-card",
-    ".skill-card",
-    ".timeline-item",
-    ".hero-panel",
-    ".signal-grid div",
-    ".proof-strip div",
-    ".cv-section"
+    ".case-footer a"
   ].join(",");
 
   function updatePosition(element, event) {

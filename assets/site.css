@@ -81,11 +81,11 @@ body::before {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  opacity: 0.78;
+  opacity: 0.42;
 }
 
 :root[data-theme="dark"] .ambient-canvas {
-  opacity: 0.92;
+  opacity: 0.58;
 }
 
 a {
@@ -220,8 +220,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ) {
   position: relative;
   isolation: isolate;
@@ -238,8 +237,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 )::before,
 :where(
   .nav-links a,
@@ -249,8 +247,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 )::after {
   content: "";
   position: absolute;
@@ -269,14 +266,13 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 )::before {
   background:
     radial-gradient(
       circle at var(--highlight-x) var(--highlight-y),
-      color-mix(in srgb, var(--accent) 32%, transparent),
-      transparent 42%
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 46%
     );
   transform: scale(0.9);
 }
@@ -289,15 +285,14 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 )::after {
   background:
     linear-gradient(
       110deg,
       transparent 0%,
       transparent 34%,
-      rgba(255, 255, 255, 0.26) 48%,
+      rgba(255, 255, 255, 0.16) 48%,
       transparent 62%,
       transparent 100%
     );
@@ -312,8 +307,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ):hover::before,
 :where(
   .nav-links a,
@@ -323,8 +317,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ):focus-visible::before,
 .repo-filter.active::before {
   opacity: 1;
@@ -339,8 +332,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ):hover::after,
 :where(
   .nav-links a,
@@ -350,11 +342,10 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ):focus-visible::after,
 .repo-filter.active::after {
-  opacity: 0.7;
+  opacity: 0.42;
   transform: translateX(130%) skewX(-18deg);
 }
 
@@ -366,8 +357,7 @@ main,
   .repo-filter,
   .project-actions a,
   .repo-actions a,
-  .case-footer a,
-  .contact-card
+  .case-footer a
 ).is-pressing {
   transform: translateY(-1px) scale(0.985);
 }
@@ -413,7 +403,10 @@ main,
 }
 
 .button:hover,
-.nav-button:hover,
+.nav-button:hover {
+  transform: translateY(-2px);
+}
+
 .contact-card:hover,
 .project-card:hover,
 .case-card:hover,
@@ -424,7 +417,7 @@ main,
 .timeline-item:hover,
 .hero-panel:hover,
 .cv-section:hover {
-  transform: translateY(-3px);
+  transform: translateY(-1px);
 }
 
 .button,
@@ -454,104 +447,6 @@ main,
   .signal-grid div,
   .proof-strip div,
   .cv-section
-) {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  --highlight-x: 50%;
-  --highlight-y: 50%;
-}
-
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
-) > * {
-  position: relative;
-  z-index: 1;
-}
-
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
-)::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at var(--highlight-x) var(--highlight-y),
-      color-mix(in srgb, var(--accent) 20%, transparent),
-      transparent 40%
-    ),
-    linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 8%, transparent), transparent 46%);
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 220ms ease, transform 320ms ease;
-}
-
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
-):hover::before,
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
-):focus-within::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
 ):hover,
 :where(
   .project-card,
@@ -566,26 +461,10 @@ main,
   .proof-strip div,
   .cv-section
 ):focus-within {
-  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--line));
   box-shadow:
-    0 18px 54px color-mix(in srgb, var(--accent) 10%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
-:where(
-  .project-card,
-  .case-card,
-  .repo-card,
-  .role-card,
-  .workflow-card,
-  .skill-card,
-  .timeline-item,
-  .hero-panel,
-  .signal-grid div,
-  .proof-strip div,
-  .cv-section
-).is-pressing {
-  transform: translateY(-2px) scale(0.995);
+    0 12px 34px color-mix(in srgb, var(--accent) 6%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 7%, transparent);
 }
 
 .theme-toggle {
