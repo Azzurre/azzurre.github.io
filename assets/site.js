@@ -377,6 +377,64 @@ function setupActiveNavigation() {
   syncFromHash();
 }
 
+function setupScrollReveals() {
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.12
+    }
+  );
+
+  function prepareReveal(element) {
+    if (element.dataset.revealObserved === "true") return;
+
+    element.dataset.revealObserved = "true";
+    if (isElementInRevealRange(element)) element.classList.add("is-visible");
+    observer.observe(element);
+  }
+
+  function isElementInRevealRange(element) {
+    const rect = element.getBoundingClientRect();
+    return rect.top < window.innerHeight * 0.92 && rect.bottom > window.innerHeight * -0.08;
+  }
+
+  function revealVisibleElements() {
+    document.querySelectorAll(".reveal:not(.is-visible)").forEach((element) => {
+      if (isElementInRevealRange(element)) element.classList.add("is-visible");
+    });
+  }
+
+  document.querySelectorAll(".reveal").forEach(prepareReveal);
+  document.documentElement.classList.add("motion-ready");
+  window.setTimeout(revealVisibleElements, 220);
+  window.setTimeout(revealVisibleElements, 900);
+
+  new MutationObserver(() => {
+    document.querySelectorAll(".reveal:not([data-reveal-observed='true'])").forEach(prepareReveal);
+  }).observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  window.addEventListener("hashchange", () => window.setTimeout(revealVisibleElements, 220));
+  window.addEventListener("scroll", () => window.requestAnimationFrame(revealVisibleElements), { passive: true });
+}
+
 function formatDate(dateString) {
   if (!dateString) return "Recently";
   return new Intl.DateTimeFormat("en-GB", {
@@ -418,7 +476,7 @@ function renderFeaturedProjects() {
   featuredProjects.forEach((project, index) => {
     const repo = repoMap.get(project.repo);
     const card = createElement("article", `project-card reveal ${project.featured ? "featured" : ""}`);
-    card.style.animationDelay = `${Math.min(index * 70, 280)}ms`;
+    card.style.setProperty("--reveal-delay", `${Math.min(index * 70, 280)}ms`);
 
     card.append(createElement("p", "project-kicker", project.kicker));
     card.append(createElement("h3", "", project.title));
@@ -486,7 +544,7 @@ function renderRepoGrid() {
 
   getVisibleRepos().forEach((repo, index) => {
     const card = createElement("article", "repo-card reveal");
-    card.style.animationDelay = `${Math.min(index * 60, 240)}ms`;
+    card.style.setProperty("--reveal-delay", `${Math.min(index * 60, 240)}ms`);
 
     card.append(createElement("span", "", `${repo.language || "Project"} / ${formatDate(repo.pushed_at || repo.updated_at)}`));
     card.append(createElement("h3", "", repo.name.replaceAll("-", " ")));
@@ -588,5 +646,6 @@ setupThemeToggle();
 setupAmbientBackground();
 setupInteractiveHighlights();
 setupActiveNavigation();
+setupScrollReveals();
 removeOldServiceWorkers();
 loadGithubRepos();

@@ -1217,28 +1217,35 @@ h1 {
 }
 
 .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+:root.motion-ready .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  animation: reveal 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+:root.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .delay-1 {
-  animation-delay: 100ms;
+  --reveal-delay: 90ms;
 }
 
 .delay-2 {
-  animation-delay: 180ms;
+  --reveal-delay: 160ms;
 }
 
 .delay-3 {
-  animation-delay: 260ms;
-}
-
-@keyframes reveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  --reveal-delay: 230ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
