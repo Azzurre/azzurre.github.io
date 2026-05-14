@@ -377,30 +377,6 @@ function setupActiveNavigation() {
   syncFromHash();
 }
 
-function setupScrollProgress() {
-  const bar = document.getElementById("scroll-progress-bar");
-  if (!bar) return;
-
-  let ticking = false;
-
-  function updateProgress() {
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
-    bar.style.transform = `scaleX(${progress})`;
-    ticking = false;
-  }
-
-  function requestProgressUpdate() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(updateProgress);
-  }
-
-  updateProgress();
-  window.addEventListener("scroll", requestProgressUpdate, { passive: true });
-  window.addEventListener("resize", requestProgressUpdate, { passive: true });
-}
-
 function setupScrollReveals() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -734,7 +710,6 @@ setupThemeToggle();
 setupAmbientBackground();
 setupInteractiveHighlights();
 setupActiveNavigation();
-setupScrollProgress();
 setupScrollReveals();
 setupHeroCounters();
 setupLiveSignal();
