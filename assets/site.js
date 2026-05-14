@@ -220,6 +220,18 @@ function updateGithubStatus(source) {
   document.getElementById("repo-count").textContent = String(allRepos.length || 12);
 }
 
+function restoreHashScroll() {
+  const id = window.location.hash.slice(1);
+  if (!id) return;
+
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  window.requestAnimationFrame(() => {
+    target.scrollIntoView({ block: "start" });
+  });
+}
+
 async function loadGithubRepos() {
   try {
     const response = await fetch(`https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`, {
@@ -237,6 +249,7 @@ async function loadGithubRepos() {
   renderFeaturedProjects();
   renderRepoFilters();
   renderRepoGrid();
+  restoreHashScroll();
 }
 
 function applyTheme(theme) {

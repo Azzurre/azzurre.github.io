@@ -226,6 +226,8 @@ textarea {
 .project-card:hover,
 .case-card:hover,
 .repo-card:hover,
+.role-card:hover,
+.workflow-card:hover,
 .skill-card:hover,
 .timeline-item:hover {
   transform: translateY(-3px);
@@ -237,6 +239,8 @@ textarea {
 .project-card,
 .case-card,
 .repo-card,
+.role-card,
+.workflow-card,
 .skill-card,
 .timeline-item {
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
@@ -471,6 +475,7 @@ h1 {
 .project-grid,
 .case-grid,
 .repo-grid,
+.role-grid,
 .skill-grid,
 .contact-grid {
   display: grid;
@@ -692,6 +697,125 @@ h1 {
   max-width: 48rem;
 }
 
+.role-fit-section .section-heading {
+  position: static;
+  max-width: 54rem;
+}
+
+.role-fit-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.35fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.role-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.role-card,
+.workflow-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--surface-solid) 84%, transparent);
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+}
+
+.role-card {
+  min-height: 25rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.role-card > span {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--accent-3);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.role-card h3,
+.workflow-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.55rem;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.role-list {
+  margin: 0;
+  padding-left: 1rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.role-list li + li {
+  margin-top: 0.55rem;
+}
+
+.role-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.role-meta span {
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--surface-solid) 76%, transparent);
+}
+
+.workflow-card {
+  position: sticky;
+  top: 7rem;
+  padding: 1.25rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent),
+    color-mix(in srgb, var(--surface-solid) 88%, transparent);
+}
+
+.workflow-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.workflow-list div {
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.workflow-list span {
+  display: inline-flex;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.workflow-list strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
+}
+
+.workflow-list p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .repo-toolbar {
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -853,9 +977,18 @@ h1 {
 
   .repo-grid,
   .contact-grid,
+  .role-grid,
   .case-grid,
   .proof-strip {
     grid-template-columns: 1fr;
+  }
+
+  .role-fit-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-card {
+    position: static;
   }
 
   .case-card.feature-case {
