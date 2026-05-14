@@ -283,7 +283,18 @@ function setupInteractiveHighlights() {
     ".project-actions a",
     ".repo-actions a",
     ".case-footer a",
-    ".contact-card"
+    ".contact-card",
+    ".project-card",
+    ".case-card",
+    ".repo-card",
+    ".role-card",
+    ".workflow-card",
+    ".skill-card",
+    ".timeline-item",
+    ".hero-panel",
+    ".signal-grid div",
+    ".proof-strip div",
+    ".cv-section"
   ].join(",");
 
   function updatePosition(element, event) {
@@ -324,6 +335,58 @@ function setupInteractiveHighlights() {
     childList: true,
     subtree: true
   });
+}
+
+function setupActiveNavigation() {
+  const links = [...document.querySelectorAll(".nav-links a[href^='#']")];
+  const sections = links
+    .map((link) => document.getElementById(link.getAttribute("href").slice(1)))
+    .filter(Boolean);
+
+  if (!links.length || !sections.length || !("IntersectionObserver" in window)) return;
+
+  function setActive(id) {
+    links.forEach((link) => {
+      const active = link.getAttribute("href") === `#${id}`;
+      link.classList.toggle("is-active", active);
+
+      if (active) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function syncFromHash() {
+    const id = window.location.hash.slice(1);
+    if (id && sections.some((section) => section.id === id)) setActive(id);
+  }
+
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      const id = link.getAttribute("href").slice(1);
+      setActive(id);
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (visible?.target?.id) setActive(visible.target.id);
+    },
+    {
+      rootMargin: "-32% 0px -54% 0px",
+      threshold: [0.08, 0.18, 0.32, 0.5]
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+  window.addEventListener("hashchange", syncFromHash);
+  syncFromHash();
 }
 
 function formatDate(dateString) {
@@ -536,5 +599,6 @@ function removeOldServiceWorkers() {
 setupThemeToggle();
 setupAmbientBackground();
 setupInteractiveHighlights();
+setupActiveNavigation();
 removeOldServiceWorkers();
 loadGithubRepos();
