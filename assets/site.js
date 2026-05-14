@@ -196,7 +196,7 @@ function renderRepoGrid() {
 
     card.append(createElement("span", "", `${repo.language || "Project"} / ${formatDate(repo.pushed_at || repo.updated_at)}`));
     card.append(createElement("h3", "", repo.name.replaceAll("-", " ")));
-    card.append(createElement("p", "", repo.description || "A public repository from my active software portfolio."));
+    card.append(createElement("p", "", repo.description || "A repository from my active software portfolio."));
 
     const actions = createElement("div", "repo-actions");
     actions.append(createActionLink(repo.html_url, "Open repository"));
@@ -215,8 +215,8 @@ function updateGithubStatus(source) {
     .sort()
     .at(-1);
 
-  const sourceText = source === "live" ? "Live GitHub data loaded" : "Showing curated fallback data";
-  status.textContent = `${sourceText}. Latest public update: ${formatDate(newest)}.`;
+  const sourceText = source === "live" ? "GitHub data loaded" : "Showing curated fallback data";
+  status.textContent = `${sourceText}. Latest update: ${formatDate(newest)}.`;
   document.getElementById("repo-count").textContent = String(allRepos.length || 12);
 }
 
